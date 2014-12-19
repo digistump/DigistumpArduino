@@ -1,0 +1,145 @@
+/*
+ Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ */
+
+// STL headers
+#include <vector>
+#include <string>
+#include <iostream>
+// C headers
+#include <stdlib.h>
+// Framework headers
+// Library headers
+#include <cxxtest/TestSuite.h>
+// Project headers
+#include <RF24Network.h>
+#include <RF24.h>
+// This component's header
+#include <Sync.h>
+
+#include "WProgram.h"
+#include "Globals.h"
+
+using namespace std;
+
+class PingTestSuite: public CxxTest::TestSuite
+{
+
+public:
+  // 'Delay' but update the network for a bit
+  void net_delay(unsigned long amount)
+  {
+    unsigned long start = millis();
+    while ( millis() - start < amount )
+    {
+      network.update();
+#if 0
+      // Is there anything ready for us?
+      if ( network.available() )
+      {
+	// If so, take a look at it
+	RF24NetworkHeader header;
+	network.read(header,0,0);
+
+	cout << millis() << ": net_delay got " << header.type << " from " << header.from_node << "\r\n";
+      }
+#endif     
+    }
+  }
+  void setUp()
+  {
+    // Reset remote to initial state
+    RF24NetworkHeader header(/*to node*/ 1, /*type*/ 'R' /*Reset*/);
+    network.write(header,0,0);
+    
+    // Wait a bit for the message to take
+    net_delay(50);
+  }
+  
+  void tearDown()
+  {
+    net_delay(100);
+    //cout << "\r\n Complete. Press any key \r\n";
+    //SerialUSB.read();
+  }
+
+  void testNothing()
+  {
+    cout << "\r\n STARTING " << __FUNCTION__ << "\r\n";
+  }
+
+  void testPing()
+  {
+    cout << "\r\n STARTING " << __FUNCTION__ << "\r\n";
+
+    // Send an echo ping to the other unit 
+    RF24NetworkHeader header(/*to node*/ 1, /*type*/ 'E' /*Echo*/);
+    uint32_t testval = 0x12345678, gotval = 0;
+    network.write(header,&testval,sizeof(testval));
+
+    const unsigned long timeout = 1000;
+    unsigned long sent_at = millis();
+    while ( millis() - sent_at < timeout && ! gotval )
+    {
+      net_delay(100);
+
+      // Is there anything ready for us?
+      if ( network.available() )
+      {
+	// If so, take a look at it
+	RF24NetworkHeader header;
+	network.peek(header);
+
+	switch (header.type)
+	{
+	case 'E':
+	  network.read(header,&gotval,sizeof(gotval));
+	  break;
+	default:
+	  // Anything else is unexpected, and ergo a test failure
+	  network.read(header,0,0);
+	  gotval = -1;
+	  break;
+	};
+      }
+    }
+
+    TS_ASSERT_EQUALS( gotval, testval );
+  }
+
+  void testFinder()
+  {
+    cout << "\r\n STARTING " << __FUNCTION__ << "\r\n";
+    
+    // Send a child finder to the other unit 
+    RF24NetworkHeader header(/*to node*/ 1, /*type*/ 'F' /*Echo*/);
+    uint32_t testval = 0x12345678, gotval = 0;
+    network.write(header,&testval,sizeof(testval));
+
+    const unsigned long timeout = 3000;
+    unsigned long sent_at = millis();
+    while ( millis() - sent_at < timeout ) // && ! gotval )
+    {
+      network.update();
+
+      // Is there anything ready for us?
+      if ( network.available() )
+      {
+	// If so, take a look at it
+	RF24NetworkHeader header;
+	network.peek(header);
+	network.read(header,&gotval,sizeof(gotval));
+
+	cout << millis() << ": FINDER " << header.type << " from " << header.from_node << " " << hex << gotval << dec << "\r\n";
+      }
+    }
+    
+    TS_ASSERT_EQUALS( gotval, testval );
+  }
+
+};
+// vim:cin:ai:sts=2 sw=2 ft=cpp

@@ -1,0 +1,251 @@
+MCU		= cortex-m3 ;
+CHIP		= STM32F103ZE ;
+BOARD		= maple_native ;
+
+#CHIP		= at91sam3u4 ;
+#BOARD		= sam3u-ek ;
+
+if ! $(TOOLSET)
+{
+	TOOLSET = mix ;
+	Echo "Assuming TOOLSET=mix" ;
+}
+else if $(TOOLSET) = cs
+{
+	TOOLS_PATH	= /opt/cs/arm/bin ;
+	TOOLS_ARCH	= arm-none-eabi- ;
+}
+else if $(TOOLSET) = yagarto
+{
+	TOOLS_PATH	= ~/Source/yagarto-4.6.2/bin ;
+	TOOLS_ARCH	= arm-none-eabi- ;
+}
+if $(TOOLSET) = yagarto-install
+{
+	TOOLS_PATH	= ~/Source/yagarto/install/bin ;
+	TOOLS_ARCH	= arm-none-eabi- ;
+}
+else if $(TOOLSET) = devkit
+{
+	TOOLS_PATH	= /opt/devkitARM/bin ;
+	TOOLS_ARCH	= arm-eabi- ;
+}
+else if $(TOOLSET) = maple
+{
+	TOOLS_PATH	= /opt/Maple/Resources/Java/hardware/tools/arm/bin ; 
+	TOOLS_ARCH	= arm-none-eabi- ;
+	LINK_DIR	= /opt/Maple/Resources/Java/hardware/leaflabs/cores/maple ;
+	MAPLE_DIR	= /opt/Maple/Resources/Java/hardware/leaflabs/cores/maple ;
+	MAPLE_SUBDIRS	= . ;
+}
+else if $(TOOLSET) = mix
+{
+	TOOLS_PATH	= /opt/Maple/Resources/Java/hardware/tools/arm/bin ; 
+	TOOLS_ARCH	= arm-none-eabi- ;
+	LINKFLAGS	+= --print-gc-sections ;
+}
+else if $(TOOLSET) = ports
+{
+	TOOLS_PATH	= /opt/local/bin ;
+	TOOLS_ARCH	= arm-none-eabi- ;
+}
+
+# Tool locations
+
+CC	  	= $(TOOLS_PATH)/$(TOOLS_ARCH)gcc ;
+C++	 	= $(TOOLS_PATH)/$(TOOLS_ARCH)g++ ;
+AS	  	= $(TOOLS_PATH)/$(TOOLS_ARCH)gcc -c ;
+LINK	  	= $(TOOLS_PATH)/$(TOOLS_ARCH)g++ ;
+OBJCOPY 	= $(TOOLS_PATH)/$(TOOLS_ARCH)objcopy ;
+DFU		= dfu-util ;
+
+# Flags
+
+DEFINES  	+= VECT_TAB_FLASH BOARD_$(BOARD) MCU_$(CHIP) ERROR_LED_PORT=GPIOC ERROR_LED_PIN=15 STM32_HIGH_DENSITY MAPLE_IDE ;
+OPTIM		= -Os ;
+MFLAGS		= cpu=$(MCU) thumb arch=armv7-m ;
+CCFLAGS  	= -Wall -Wno-strict-aliasing -Wno-format -m$(MFLAGS) -g -nostdlib -ffunction-sections -fdata-sections -Wl,--gc-sections ;
+C++FLAGS  	= $(CCFLAGS) -fno-rtti -fno-exceptions ; 
+LINKFLAGS  	+= -m$(MFLAGS) -Xlinker --gc-sections ;
+DFUFLAGS	= -a1 -d 0x1eaf:0x0003 -R ;
+
+# Directories
+
+MAPLE_DIR	?= /opt/libmaple ;
+MAPLE_LIBS	= Servo LiquidCrystal Wire FreeRTOS ;
+MAPLE_SUBDIRS	?= libmaple libmaple/usb libmaple/usb/usb_lib wirish wirish/comm wirish/boards ; 
+
+SKETCH_DIR	= $(HOME)/Source/Maple ;
+
+CORE_DIRS	= $(MAPLE_DIR)/$(MAPLE_SUBDIRS) $(MAPLE_DIR)/libraries/$(MAPLE_LIBS) $(MAPLE_DIR)/libraries/$(MAPLE_LIBS)/utility ;
+HDRS		= $(CORE_DIRS) ;
+
+# Modules
+MODULE_EXT	= *.c *.cpp *.S *.pde *.ino *.test ;
+CORE_MODULES	= [ GLOB $(CORE_DIRS) : $(MODULE_EXT) ] ; 
+
+# Unit test framework
+CXXTEST_DIR	= $(HOME)/Source/cxxtest ;
+CXXTEST_GEN	= $(CXXTEST_DIR)/bin/cxxtestgen ;
+HDRS		+= $(CXXTEST_DIR) ;
+
+# Linker script
+LINK_DIR	?= $(MAPLE_DIR)/support/ld ;
+LINKSCRIPT	= $(LINK_DIR)/$(BOARD)/flash.ld ; 
+LINKFLAGS 	+= -T$(LINKSCRIPT) -L$(LINK_DIR) ;
+
+rule Pde
+{
+	Depends $(<) : $(>) ;
+	MakeLocate $(<) : $(LOCATE_SOURCE) ;
+	Clean clean : $(<) ;
+}
+
+if ( $(ARDUINO_VERSION) < 100 )
+{
+	ARDUINO_H = WProgram.h ;
+}
+else
+{
+	ARDUINO_H = Arduino.h ;
+}
+
+actions Pde
+{
+	echo "#include <$(ARDUINO_H)>" > $(<) 
+	echo "#line 1 \"$(>)\"" >> $(<)
+	cat $(>) >> $(<) 
+}
+
+rule C++Pde
+{
+	local _CPP = $(>:B).cpp ;
+	Pde $(_CPP) : $(>) ;
+	C++ $(<) : $(_CPP) ;
+}
+
+rule TestSuite
+{
+	Depends $(<) : $(>) ;
+	MakeLocate $(<) : $(LOCATE_SOURCE) ;
+	Clean clean : $(<) ;
+}
+
+actions TestSuite
+{
+	$(CXXTEST_GEN) --part $(>) > $(<)
+}
+
+rule TestRoot
+{
+	MakeLocate $(<) : $(LOCATE_SOURCE) ;
+}
+
+actions TestRoot
+{
+	$(CXXTEST_GEN) --root --error-printer > $(<)
+}
+
+rule C++TestSuite
+{
+	local _CPP = $(>:B).cpp ;
+	TestSuite $(_CPP) : $(>) ;
+	C++ $(<) : $(_CPP) ;
+}
+
+rule Hex
+{
+	Depends $(<) : $(>) ;
+	MakeLocate $(<) : $(LOCATE_TARGET) ;
+	Depends hex : $(<) ;
+	Clean clean : $(<) ;
+}
+
+actions Hex
+{
+	$(OBJCOPY) -O ihex $(>) $(<)
+}
+
+rule Binary
+{
+	Depends $(<) : $(>) ;
+	MakeLocate $(<) : $(LOCATE_TARGET) ;
+	Depends binary : $(<) ;
+	Clean clean : $(<) ;
+}
+
+actions Binary
+{
+	$(OBJCOPY) -O binary $(>) $(<)
+}
+
+rule UserObject
+{
+	switch $(>:S)
+	{
+		case .S : As $(<) : $(>) ;
+		case .ino : C++Pde $(<) : $(>) ;
+		case .pde : C++Pde $(<) : $(>) ;
+		case .test : C++TestSuite $(<) : $(>) ;
+	}
+}
+
+rule Upload
+{
+	Depends up : $(<) ;
+	NotFile up ;
+	Always $(<) ;
+}
+
+actions Upload
+{
+	$(MAPLE_DIR)/support/scripts/reset.py
+	sleep 1
+	$(DFU) $(DFUFLAGS) -D $(<)
+	sleep 5
+}
+
+rule Login
+{
+	MakeLocate $(<) : $(LOCATE_TARGET) ;
+	Always $(<) ;
+}
+
+actions Login
+{
+	ls > $(<)
+	screen $(>) 
+}
+
+# Override base objects rule, so all output can go in the output dir
+rule Objects
+{
+        local _i ;
+
+        for _i in [ FGristFiles $(<) ]
+        {
+		local _b = $(_i:B)$(SUFOBJ) ;
+		local _o = $(_b:G=$(SOURCE_GRIST:E)) ;
+                Object $(_o) : $(_i) ;
+                Depends obj : $(_o) ;
+        }
+}
+
+# Override base main rule, so all output can go in the output dir
+rule Main
+{
+	# Bring in the map
+	LINKFLAGS on $(<) = $(LINKFLAGS) -Wl,-Map=$(LOCATE_TARGET)/$(<:B).map ;
+
+	MakeLocate $(<) ;
+        MainFromObjects $(<) : $(>:B)$(SUFOBJ) ;
+        Objects $(>) ;
+}
+
+rule Maple
+{
+	Main $(<) : $(>) $(CORE_MODULES) ; 
+	Binary $(<:B).bin : $(<) ;
+	Upload $(<:B).bin ;
+	Login login : /dev/tty.usbmodemfa441 ;
+}

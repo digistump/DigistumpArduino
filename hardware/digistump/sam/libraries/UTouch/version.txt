@@ -1,0 +1,5 @@
+Version:
+	1.0	 1 Dec 2012  -  initial release
+	1.1	23 May 2013  -  added support for more display modules
+				modified calibration to try to compensate for slight flaws in some (larger) touchscreens
+				changed license to CC BY-NC-SA 3.0

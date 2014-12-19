@@ -1,0 +1,12 @@
+SubDir TOP ;
+
+# Set up output directories
+LOCATE_TARGET	= $(SEARCH_SOURCE)/out/$(TOOLSET) ;
+LOCATE_SOURCE	= $(LOCATE_TARGET) ;
+
+# Pull in local libraries
+SKETCH_LIBS	+= RF24Network RF24 ;
+HDRS		+= $(HOME)/Source/Arduino/libraries/$(SKETCH_LIBS) ;
+
+# Main output executable
+Maple $(SEARCH_SOURCE:B).elf : [ GLOB $(SEARCH_SOURCE) $(HOME)/Source/Arduino/libraries/$(SKETCH_LIBS) : $(MODULE_EXT) ] ;

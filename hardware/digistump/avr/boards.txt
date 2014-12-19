@@ -1,0 +1,65 @@
+# See: http://code.google.com/p/arduino/wiki/Platforms
+
+menu.cpu=Processor
+
+##############################################################
+
+
+
+
+digispark-tiny.name=Digispark (Default - 16.5mhz)
+digispark-tiny.upload.using=micronucleusprog
+digispark-tiny.upload.protocol=usb
+digispark-tiny.upload.tool=micronucleus
+digispark-tiny.upload.maximum_size=6012
+digispark-tiny.build.mcu=attiny85
+digispark-tiny.build.f_cpu=16500000L
+digispark-tiny.build.board=AVR_DIGISPARK
+digispark-tiny.build.core=tiny
+digispark-tiny.build.variant=digispark
+digispark-tiny.upload.wait_for_upload_port = false
+digispark-tiny.upload.use_1200bps_touch = false
+digispark-tiny.upload.disable_flushing = false
+
+
+digispark-pro.name=Digispark Pro (Default 16 Mhz)
+digispark-pro.upload.using=micronucleusprog
+digispark-pro.upload.protocol=usb
+digispark-pro.upload.tool=micronucleus
+digispark-pro.upload.maximum_size=14844
+digispark-pro.build.mcu=attiny167
+digispark-pro.build.f_cpu=16000000L
+digispark-pro.build.board=AVR_DIGISPARKPRO
+digispark-pro.build.core=pro
+digispark-pro.build.variant=pro
+digispark-pro.upload.wait_for_upload_port = false
+digispark-pro.upload.use_1200bps_touch = false
+digispark-pro.upload.disable_flushing = false
+
+digispark-pro32.name=Digispark Pro (16 Mhz) (32 byte buffer)
+digispark-pro32.upload.using=micronucleusprog
+digispark-pro32.upload.protocol=usb
+digispark-pro32.upload.tool=micronucleus
+digispark-pro32.upload.maximum_size=14844
+digispark-pro32.build.mcu=attiny167
+digispark-pro32.build.f_cpu=16000000L
+digispark-pro32.build.board=AVR_DIGISPARKPRO
+digispark-pro32.build.core=pro
+digispark-pro32.build.variant=pro32buffer
+digispark-pro32.upload.wait_for_upload_port = false
+digispark-pro32.upload.use_1200bps_touch = false
+digispark-pro32.upload.disable_flushing = false
+
+digispark-pro64.name=Digispark Pro (16 Mhz) (64 byte buffer)
+digispark-pro64.upload.using=micronucleusprog
+digispark-pro64.upload.protocol=usb
+digispark-pro64.upload.tool=micronucleus
+digispark-pro64.upload.maximum_size=14844
+digispark-pro64.build.mcu=attiny167
+digispark-pro64.build.f_cpu=16000000L
+digispark-pro64.build.board=AVR_DIGISPARKPRO
+digispark-pro64.build.core=pro
+digispark-pro64.build.variant=pro64buffer
+digispark-pro64.upload.wait_for_upload_port = false
+digispark-pro64.upload.use_1200bps_touch = false
+digispark-pro64.upload.disable_flushing = false

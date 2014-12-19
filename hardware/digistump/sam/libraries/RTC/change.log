@@ -1,0 +1,90 @@
+2013/01/04 Due RTC Library v1.8
+added
+	- Function rtc_clock.set_clock()
+			function to set Time and Date from compliertime -/date in 1 line
+			
+fixed
+	- Bug in rtc_clock.unixtime()
+	- Bug in rtc_clock.summertime()
+
+2013/04/03 Due RTC Library v1.7
+added
+	- Function rtc_clock.date_already_set()
+			function to proof if date is already set
+	- Sketch Due_RTC_Simple_test_of_date
+			for rtc_clock.date_already_set()
+
+2013/04/03 Due RTC Library v1.6
+added
+	- Function rtc_clock.timing()
+			function to test if time and date set in summer or not musst be done in the inital
+			part when the clock is setup works in connection with rtc_clock.summertime() so
+			thats if the clock is setup in the range of summertime the function
+			rtc_clock.summertime() makes the right correct between the time changes
+			for Germany usefull
+	- Sketch Due_RTC_Simple_german_timing_summertime_sample 
+			for rtc_clock.timing() & rtc_clock.summertime()
+			
+2013/04/03 Due RTC Library v1.5
+modify
+	- Sketch Due_RTC_Simple_Germay_Summertime
+			some changes in the Sketch for an better Output on the Serialmonitor
+
+2013/04/03 Due RTC Library v1.4
+added
+	- Function rtc_clock.summertime()
+			function to show if summertime or not returns 1 for summertime (for Germany only)
+	- Sketch Due_RTC_Simple_Germay_Summertime
+			for rtc_clock.summertime()
+	- Function rtc_clock.switch_years()
+			function returns 1 if year is an switch year
+
+modify
+	- Function rtc_clock.unixtime()
+			add support for timezone Germay now summer- wintertime automatic supported
+
+2013/02/03 Due RTC Library v1.3
+modify
+	- Function rtc_clock.unixtime()
+			add support for timezones to change automatic the unixtime to the right value
+	- Sketch Due_RTC_Simple_Unixtime_timezone
+			for rtc_clock.unixtime()
+
+2013/01/03 Due RTC Library v1.2
+added
+	- Function rtc_clock.get_time()
+			to get Time in one operation
+	- Function rtc_clock.get_date()
+			to get Date in one operation
+	- Sketch Due_RTC_Simple_Sample_oneline_time_and_date
+			for rtc_clock.get_time() & rtc_clock.get_date()
+	- Changelog and versioning
+			to get some overview for me and users
+			
+modify
+	- Function rtc_clock.unixtime()
+			some changes in the codelines
+	- Sketch Due_RTC_Simple_Unixtime_Compilertime
+			some cosmetic changes in this Sketch
+		
+fixed
+	- Bug in rtc_clock.set_alarmdate function
+			wrong value name
+
+2013/28/02 Due RTC Library v1.1
+added
+	- Function rtc_clock.unixtime()
+			for unixtime support
+	- Sample Due_RTC_Simple_Unixtime_Compilertime
+			for unixtime and compilertime
+
+modify
+	- Function rtc_clock.set_time()
+			to support compilertime with the value __TIME__
+	- Function rtc_clock.set_date()
+			to support compilertime with the value __DATE__
+	- Syntax Coloring
+			set rtc_clock to KEYWORD3 now rtc_clock printed bold
+
+2012/07/12 Due RTC Library v1.0
+Initial Release

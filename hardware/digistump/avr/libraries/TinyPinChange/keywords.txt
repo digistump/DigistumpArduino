@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring Map TinyPinChange
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+TinyPinChange	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+TinyPinChange_Init	KEYWORD2
+TinyPinChange_RegisterIsr	KEYWORD2
+TinyPinChange_EnregistreFonctionInterruption	KEYWORD2
+TinyPinChange_EnablePin	KEYWORD2
+TinyPinChange_ActiveBroche	KEYWORD2
+TinyPinChange_DisablePin	KEYWORD2
+TinyPinChange_DesactiveBroche	KEYWORD2
+TinyPinChange_GetPinEvent	KEYWORD2
+TinyPinChange_RetourneEvenemenPort	KEYWORD2
+TinyPinChange_GetPinCurSt	KEYWORD2
+TinyPinChange_RetourneEtatCourantPort	KEYWORD2
+TinyPinChange_PinToMsk	KEYWORD2
+TinyPinChange_MasqueDeBroche	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

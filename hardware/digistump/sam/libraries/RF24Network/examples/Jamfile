@@ -1,0 +1,6 @@
+SubDir TOP libraries RF24Network examples sensornet ;
+
+LOCATE_SOURCE = $(SUBDIR)/$(PINS) ;
+LOCATE_TARGET = $(SUBDIR)/$(PINS) ;
+
+ArduinoWithLibs Main : RF24Network RF24 Tictocs SPI ;

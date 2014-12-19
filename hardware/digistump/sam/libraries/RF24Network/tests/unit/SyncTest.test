@@ -1,0 +1,123 @@
+/*
+ Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ */
+
+// STL headers
+#include <vector>
+#include <string>
+#include <iostream>
+// C headers
+#include <stdlib.h>
+// Framework headers
+// Library headers
+#include <cxxtest/TestSuite.h>
+// Project headers
+#include <RF24Network.h>
+#include <RF24.h>
+// This component's header
+#include <Sync.h>
+
+#include "WProgram.h"
+
+#include "Globals.h"
+
+using namespace std;
+
+class SyncTestSuite: public CxxTest::TestSuite
+{
+  struct sync_data_t
+  {
+    uint16_t first;
+    uint16_t second;
+
+    sync_data_t(void): first(1), second(2) {}
+  };
+
+  sync_data_t* p_sync_data;
+
+  Sync* pSync;
+
+public:
+  // 'Delay' but update the network for a bit
+  void net_delay(unsigned long amount)
+  {
+    unsigned long start = millis();
+    while ( millis() - start < amount )
+    {
+      pSync->update();
+      // Is there anything ready for us?
+      if ( network.available() )
+      {
+	// If so, take a look at it
+	RF24NetworkHeader header;
+	network.read(header,0,0);
+
+	cout << millis() << ": net_delay got " << header.type << " from " << header.from_node << "\r\n";
+      }
+    }
+  }
+  void setUp()
+  {
+    pSync = new Sync(network);
+    pSync->begin(/* other node*/ 1);
+    p_sync_data = new(sync_data_t);
+
+    // Reset remote to initial state
+    RF24NetworkHeader header(/*to node*/ 1, /*type*/ 'R' /*Reset*/);
+    network.write(header,0,0);
+    
+    // Wait a bit for the message to take
+    net_delay(200);
+  }
+  
+  void tearDown()
+  {
+    net_delay(100);
+    //cout << "\r\n Complete. Press any key \r\n";
+    //SerialUSB.read();
+    
+    delete p_sync_data;
+    delete pSync;
+  }
+
+  void testNoUpdate( void )
+  {
+    cout << "\r\n STARTING " << __FUNCTION__ << "\r\n";
+    
+    pSync->register_me(*p_sync_data);
+
+    int i = 10;
+    while (i--)
+      pSync->update();
+    
+    TS_ASSERT_EQUALS(p_sync_data->first,1);
+  }
+  void testSync( void )
+  {
+    cout << "\r\n STARTING " << __FUNCTION__ << "\r\n";
+    pSync->register_me(*p_sync_data);
+
+    int i = 10;
+    while (i--)
+      pSync->update();
+
+    const uint16_t testval = 10;
+    p_sync_data->first = testval;
+
+    // wait a little while.  During this time, the 'first' value will be propagated
+    // out to the other unit, it will set the value onto 'second', and it should get
+    // propagated back.
+
+    const unsigned long interval = 1000;
+    unsigned long sent_at = millis();
+    while ( millis() - sent_at < interval && p_sync_data->second != testval )
+      pSync->update();
+
+    TS_ASSERT_EQUALS(p_sync_data->second,testval);
+  }
+};
+// vim:cin:ai:sts=2 sw=2 ft=cpp

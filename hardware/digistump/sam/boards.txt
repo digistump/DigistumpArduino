@@ -1,0 +1,16 @@
+digix.name=Digistump DigiX
+digix.upload.tool=bossac
+digix.upload.protocol=sam-ba
+digix.upload.maximum_size=524288
+digix.upload.use_1200bps_touch=true
+digix.upload.wait_for_upload_port=true
+digix.upload.native_usb=true
+digix.build.mcu=cortex-m3
+digix.build.f_cpu=84000000L
+digix.build.core=digix
+digix.build.extra_flags=-D__SAM3X8E__ -mthumb -DUSB_PID={build.pid} -DUSB_VID={build.vid} -DUSBCON
+digix.build.ldscript=linker_scripts/gcc/flash.ld
+digix.build.variant=digix
+digix.build.variant_system_lib=libsam_sam3x8e_gcc_rel.a
+digix.build.vid=0x16D0
+digix.build.pid=0x078A
