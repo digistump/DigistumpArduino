@@ -33,7 +33,7 @@
 
 #define NUM_DIGITAL_PINS            14
 #define NUM_ANALOG_INPUTS           10
-#define analogInputToDigitalPin(p)  ((p < 7) ? p+6 : (p ==7) ? 5 : (p==9) ? 4 : (p==10) ? 13 : -1)
+#define analogInputToDigitalPin(p)  ((p == 3) ? 14 : (p == 4) ? 11 : (p < 7) ? p+6 : (p ==7) ? 5 : (p==9) ? 4 : (p==10) ? 13 : -1)
 
 #define digitalPinHasPWM(p)         ((p) == 0 || (p) == 1)
 
@@ -182,8 +182,8 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] =
 	_BV(0), /* 0 */
 	_BV(1),
 	_BV(2), /* 2 */
-	_BV(3), /* 3 */
-	_BV(6), /* 4 */
+	_BV(6), /* 3 */
+	_BV(3), /* 4 */
 	_BV(7),
 	_BV(0),
 	_BV(1),
