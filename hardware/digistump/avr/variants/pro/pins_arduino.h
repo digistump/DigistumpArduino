@@ -33,7 +33,7 @@
 
 #define NUM_DIGITAL_PINS            14
 #define NUM_ANALOG_INPUTS           10
-#define analogInputToDigitalPin(p)  ((p == 3) ? 14 : (p == 4) ? 11 : (p < 7) ? p+6 : (p ==7) ? 5 : (p==9) ? 4 : (p==10) ? 13 : -1)
+#define analogInputToDigitalPin(p)  ((p == 3) ? 23 : (p == 5) ? 21 : (p < 13 && p > 5) ? p+14 : (p ==13) ? 24 : -1)
 
 #define digitalPinHasPWM(p)         ((p) == 0 || (p) == 1)
 
@@ -46,7 +46,7 @@ static const uint8_t SDA = 0;
 static const uint8_t SCL = 2;
 
 //Ax constants cannot be used for digitalRead/digitalWrite/analogWrite functions, only analogRead().
-static const uint8_t A4 = NUM_DIGITAL_PINS+9;
+static const uint8_t A3 = NUM_DIGITAL_PINS+9;
 static const uint8_t A5 = NUM_DIGITAL_PINS+7;
 static const uint8_t A6 = NUM_DIGITAL_PINS+0;
 static const uint8_t A7 = NUM_DIGITAL_PINS+1;
@@ -108,9 +108,9 @@ static const uint8_t A13 = NUM_DIGITAL_PINS+10;
 
 
 #define digitalPinToPCICR(p)     (&PCIFR) 
-#define digitalPinToPCICRbit(p) (((p) >= 3 && (p) <= 10) ? 4 : 5)
-#define digitalPinToPCMSK(p)    (((p) >= 3 && (p) <= 10) ? (&PCMSK0) : (((p) >= 0 && (p) <= 2) ? (&PCMSK1) : ((uint8_t *)NULL)))
-#define digitalPinToPCMSKbit(p) (((p) >= 3 && (p) <= 10) ? (10 - (p)) : (p))
+#define digitalPinToPCICRbit(p) (((p) >= 6 && (p) <= 13) ? PCIE0 : PCIE1)
+#define digitalPinToPCMSK(p)    (((p) >= 6 && (p) <= 13) ? (&PCMSK0) : (&PCMSK1))
+#define digitalPinToPCMSKbit(p) (((p) >= 6 && (p) <= 13) ? ((p) - 6) : (((p) >= 0 && (p) <= 3) ? (p) : ((p) + 2)))
 
 #ifdef ARDUINO_MAIN
 
@@ -174,7 +174,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] =
 	PA, /* 10 */
 	PA,
 	PA,
-	PB, /* 15 */
+	PB, /* RESET */
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = 
