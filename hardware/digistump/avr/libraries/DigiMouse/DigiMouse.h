@@ -31,6 +31,10 @@ static uchar rt_usbHidReportDescriptorSize = 0;
 static const uchar *rt_usbDeviceDescriptor = NULL;
 static uchar rt_usbDeviceDescriptorSize = 0;
 
+#define MOUSEBTN_LEFT_MASK		0x01
+#define MOUSEBTN_RIGHT_MASK		0x02
+#define MOUSEBTN_MIDDLE_MASK	0x04
+
 // TODO: Work around Arduino 12 issues better.
 //#include <WConstants.h>
 //#undef int()
@@ -53,6 +57,7 @@ static unsigned char idle_rate = DIGIMOUSE_DEFAULT_REPORT_INTERVAL / 4; // in un
 static unsigned long last_report_time = 0;
 
 
+char usb_hasCommed = 0;
 
 const PROGMEM unsigned char mouse_usbHidReportDescriptor[] = { /* USB report descriptor */
 		0x05, 0x01,										 // USAGE_PAGE (Generic Desktop)
@@ -89,7 +94,7 @@ const PROGMEM unsigned char mouse_usbHidReportDescriptor[] = { /* USB report des
 
 #define USBDESCR_DEVICE					1
 
-unsigned const char usbDescrDevice[] PROGMEM = {		/* USB device descriptor */
+const unsigned char usbDescrDevice[] PROGMEM = {		/* USB device descriptor */
 		18,					/* sizeof(usbDescrDevice): length of descriptor in bytes */
 		USBDESCR_DEVICE,		/* descriptor type */
 		0x01, 0x01, /* USB version supported */
@@ -145,16 +150,18 @@ void clearMove() {
 class DigiMouseDevice {
  public:
 	DigiMouseDevice () {
-		// this timer stuff doesn't even make sense - it seems like someone got some code for Timer1
-		// and haphazardly changed the 1's in the register names to 0's, but the two timers don't work
-		// the same way, so this code doesn't do what it says at all. Is it even useful to have?
-		/* configure timer 0 for a rate of 16M5/(1024 * 256) = 62.94 Hz (~16ms) */
-		//TCCR0A = 5;			 /* timer 0 prescaler: 1024 */
 		
-		
-		
-		//TIMSK &= !(1<TOIE0);//interrupt off
+	}
+
+	char isConnected()
+	{
+		return usb_hasCommed;
+	}
+
+	void begin(){
+
 		cli();
+		PORTB &= ~(_BV(USB_CFG_DMINUS_BIT) | _BV(USB_CFG_DPLUS_BIT));
 		usbDeviceDisconnect();
 		_delay_ms(250);
 		usbDeviceConnect();
@@ -170,6 +177,16 @@ class DigiMouseDevice {
 		sei();
 		last_report_time = millis();
 	}
+
+	
+	void refresh() {
+		update();
+	}
+
+	void poll() {
+		update();
+	}
+
 	
 	void update() {
 		usbPoll();
@@ -231,6 +248,28 @@ class DigiMouseDevice {
 		last_built_report[2] = *(reinterpret_cast<unsigned char *>(&deltaY));
 		last_built_report[3] = *(reinterpret_cast<unsigned char *>(&deltaS));
 	}
+
+	void move(char deltaX, char deltaY, char deltaS, char buttons) {
+		if (deltaX == -128) deltaX = -127;
+		if (deltaY == -128) deltaY = -127;
+		if (deltaS == -128) deltaS = -127;
+		last_built_report[0] = buttons;
+		last_built_report[1] = *(reinterpret_cast<unsigned char *>(&deltaX));
+		last_built_report[2] = *(reinterpret_cast<unsigned char *>(&deltaY));
+		last_built_report[3] = *(reinterpret_cast<unsigned char *>(&deltaS));
+	}
+
+	void rightClick(){
+		last_built_report[0] = MOUSEBTN_RIGHT_MASK;
+	}
+
+	void leftClick(){
+		last_built_report[0] = MOUSEBTN_RIGHT_MASK;
+	}
+	
+	void middleClick(){
+		last_built_report[0] = MOUSEBTN_RIGHT_MASK;
+	}
 	
 	void setButtons(unsigned char buttons) {
 		last_built_report[0] = buttons;
@@ -254,6 +293,7 @@ extern "C"{
 	// USB_PUBLIC uchar usbFunctionSetup
 	
 	uchar usbFunctionSetup(uchar data[8]) {
+		usb_hasCommed = 1;
 		usbRequest_t *rq = (usbRequest_t *)data;
 	
 		usbMsgPtr = reportBuffer;
