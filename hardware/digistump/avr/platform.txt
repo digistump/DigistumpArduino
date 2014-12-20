@@ -65,8 +65,8 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 # AVR Uploader/Programmers tools
 # ------------------------------
 
-tools.micronucleus.cmd.path={sketchbook.path}/hardware/digistump/avr/tools/avrdude
-tools.micronucleus.cmd.path.linux={sketchbook.path}/hardware/digistump/avr/tools/avrdude
+tools.micronucleus.cmd.path={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
+tools.micronucleus.cmd.path.linux={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
 
 tools.micronucleus.upload.params.verbose=-v
 tools.micronucleus.upload.params.quiet=-q
