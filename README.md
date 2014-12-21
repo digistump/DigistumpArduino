@@ -16,4 +16,3 @@ Micronucleus: https://github.com/micronucleus/micronucleus/tree/80419704f68bf078
 
 AVR-Dummy: https://github.com/digistump/avr-dummy
 
-ld from a more recent install of avr-gcc then Arduino uses
