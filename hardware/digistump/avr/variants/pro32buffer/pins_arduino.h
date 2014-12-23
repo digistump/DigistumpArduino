@@ -107,10 +107,14 @@ static const uint8_t A13 = NUM_DIGITAL_PINS+10;
 
 
 
-#define digitalPinToPCICR(p)     (&PCIFR) 
-#define digitalPinToPCICRbit(p) (((p) >= 6 && (p) <= 13) ? PCIE0 : PCIE1)
-#define digitalPinToPCMSK(p)    (((p) >= 6 && (p) <= 13) ? (&PCMSK0) : (&PCMSK1))
-#define digitalPinToPCMSKbit(p) (((p) >= 6 && (p) <= 13) ? ((p) - 6) : (((p) >= 0 && (p) <= 3) ? (p) : ((p) + 2)))
+#define digitalPinToPCICR(p)    (&PCICR)
+#define digitalPinToPCICRbit(p) ( ((p) >= 5 && (p) <= 12) ? PCIE0 : PCIE1 )
+#define digitalPinToPCMSK(p)    ( ((p) >= 5 && (p) <= 12) ? (&PCMSK0) : (&PCMSK1) )
+#define digitalPinToPCMSKbit(p) ( (((p) >= 0) && ((p) <= 2))  ? (p) :       \
+                                ( (((p) >= 6) && ((p) <= 13)) ? ((p) - 6) : \
+                                ( ((p) == 3) ? 6 :                          \
+                                ( ((p) == 4) ? 3 :                          \
+                                ( 7) ) ) ) ) /* pin 5 */
 
 #ifdef ARDUINO_MAIN
 
