@@ -185,7 +185,7 @@ USB_PUBLIC void usbPoll(void);
 #ifdef __cplusplus
 } // extern "C"
 #endif
-extern uchar *usbMsgPtr;
+extern const uchar *usbMsgPtr;
 /* This variable may be used to pass transmit data to the driver from the
  * implementation of usbFunctionWrite(). It is also used internally by the
  * driver for standard control requests.

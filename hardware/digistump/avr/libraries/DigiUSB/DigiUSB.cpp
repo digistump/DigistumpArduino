@@ -33,9 +33,7 @@ at least be connected to INT0 as well.
 
 #include "DigiUSB.h"
 
-#if F_CPU != 16500000L
-  #error "You must use Digispark (Tiny Core) board to use USB libraries"
-#endif
+
 
 // Ring buffer implementation nicked from HardwareSerial.cpp
 // TODO: Don't nick it. :)
@@ -163,7 +161,7 @@ int tx_read() {
 #ifdef __cplusplus
 extern "C"{
 #endif 
-PROGMEM char usbHidReportDescriptor[22] = {    /* USB report descriptor */
+PROGMEM const char usbHidReportDescriptor[22] = {    /* USB report descriptor */
     0x06, 0x00, 0xff,              // USAGE_PAGE (Generic Desktop)
     0x09, 0x01,                    // USAGE (Vendor Usage 1)
     0xa1, 0x01,                    // COLLECTION (Application)

@@ -5,7 +5,7 @@
  * Modified for Digispark by Digistump
  * And now modified by Sean Murphy (duckythescientist) from a keyboard device to a joystick device
  * And now modified by Bluebie to have better code style, not ruin system timers, and have delay() function
- * Most of the credit for the joystick code should go to RaphaÃ«l AssÃ©nat
+ * Most of the credit for the joystick code should go to Raphaël Assénat
  */
 #ifndef __DigiJoystick_h__
 #define __DigiJoystick_h__
