@@ -5,7 +5,7 @@
  * Modified for Digispark by Digistump
  * And now modified by Sean Murphy (duckythescientist) from a keyboard device to a joystick device
  * And now modified by Bluebie to have better code style, not ruin system timers, and have delay() function
- * Most of the credit for the joystick code should go to Raphaël Assénat
+ * Most of the credit for the joystick code should go to RaphaÃ«l AssÃ©nat
  */
 #ifndef __DigiJoystick_h__
 #define __DigiJoystick_h__
@@ -26,12 +26,10 @@
 #include "oddebug.h"
 #include "usbconfig.h"
  
-static uchar *rt_usbHidReportDescriptor=NULL;
+const static uchar *rt_usbHidReportDescriptor=NULL;
 static uchar rt_usbHidReportDescriptorSize=0;
-static uchar *rt_usbDeviceDescriptor=NULL;
+const static uchar *rt_usbDeviceDescriptor=NULL;
 static uchar rt_usbDeviceDescriptorSize=0;
-byte buttonLowByte = 0;
-byte buttonHighByte = 0;
 
 // TODO: Work around Arduino 12 issues better.
 //#include <WConstants.h>
@@ -53,9 +51,9 @@ static unsigned char must_report = 0;
 static unsigned char idle_rate = DIGIJOYSTICK_DEFAULT_REPORT_INTERVAL / 4; // in units of 4ms
 // new minimum report frequency system:
 static unsigned long last_report_time = 0;
-char usb_hasCommed = 0;
 
-unsigned char gcn64_usbHidReportDescriptor[] PROGMEM = {
+
+const unsigned char gcn64_usbHidReportDescriptor[] PROGMEM = {
 		0x05, 0x01,										 // USAGE_PAGE (Generic Desktop)
 		0x09, 0x05,										 // USAGE (Gamepad)
 		0xa1, 0x01,										 // COLLECTION (Application)
@@ -93,7 +91,7 @@ unsigned char gcn64_usbHidReportDescriptor[] PROGMEM = {
 
 #define USBDESCR_DEVICE					1
 
-unsigned char usbDescrDevice[] PROGMEM = {		/* USB device descriptor */
+const unsigned char usbDescrDevice[] PROGMEM = {		/* USB device descriptor */
 		18,					/* sizeof(usbDescrDevice): length of descriptor in bytes */
 		USBDESCR_DEVICE,		/* descriptor type */
 		0x01, 0x01, /* USB version supported */
@@ -137,18 +135,11 @@ int getGamepadReport(unsigned char *dstbuf) {
 	return GCN64_REPORT_SIZE;
 }
 
-
  
 class DigiJoystickDevice {
  public:
 	DigiJoystickDevice () {
-
-	}
-
-	void begin(){
-
 		cli();
-		PORTB &= ~(_BV(USB_CFG_DMINUS_BIT) | _BV(USB_CFG_DPLUS_BIT));
 		usbDeviceDisconnect();
 		_delay_ms(250);
 		usbDeviceConnect();
@@ -163,21 +154,6 @@ class DigiJoystickDevice {
 		sei();
 		
 		last_report_time = millis();
-	
-
-	}
-
-	char isConnected()
-	{
-		return usb_hasCommed;
-	}
-	
-	void refresh() {
-		update();
-	}
-
-	void poll() {
-		update();
 	}
 	
 	void update() {
@@ -263,18 +239,6 @@ class DigiJoystickDevice {
 	void setSLIDER(char value) {
 		setSLIDER(*(reinterpret_cast<byte *>(&value)));
 	}
-
-	void setButton(unsigned char button, unsigned char state) {
-		if(button<8){
-			bitWrite(buttonLowByte, button, state);
-			setButtons(buttonByte, (byte) 0);
-		}
-		else{
-			button = button - 8;
-		  	bitWrite(buttonHighByte, button, state);
-		  	setButtons((byte) 0, buttonByte);
-		}
-	}
 	
 	void setButtons(unsigned char low, unsigned char high) {
 		last_built_report[6] = low;
@@ -308,7 +272,6 @@ extern "C"{
 	// USB_PUBLIC uchar usbFunctionSetup
 	
 	uchar usbFunctionSetup(uchar data[8]) {
-		usb_hasCommed = 1;
 		usbRequest_t *rq = (usbRequest_t *)data;
 
 		usbMsgPtr = reportBuffer;
