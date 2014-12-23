@@ -1,3 +1,0 @@
-DigiKeyboard	KEYWORD1
-update KEYWORD2
-sendKeyStroke KEYWORD2
