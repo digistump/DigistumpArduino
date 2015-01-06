@@ -42,21 +42,26 @@ void DigiCDCDevice::begin(){
     usbBegin();
 
 }
-size_t DigiCDCDevice::write(uint8_t chr)
+size_t DigiCDCDevice::write(uint8_t c)
 {
     if(RingBuffer_IsFull(&txBuf))
     {
+        refresh();
         return 0;
     }
     else
     {
-        RingBuffer_Insert(&txBuf,chr);
+        RingBuffer_Insert(&txBuf,c);
+        DigiCDCDevice::delay(45); //ouch its slow but it ensures it will work no matter how long of a string is thrown at it
         return 1;
     }
+    
+
 }
 
 int DigiCDCDevice::available()
 {
+    refresh();
     return RingBuffer_GetCount(&rxBuf);
 }
 
@@ -64,12 +69,15 @@ int DigiCDCDevice::read()
 {
     if(RingBuffer_IsEmpty(&rxBuf))
     {
+        refresh();
         return 0;
     }
     else
     {
+        refresh();
         return RingBuffer_Remove(&rxBuf);
     }
+   
 }
 
 int DigiCDCDevice::peek()
@@ -82,22 +90,21 @@ int DigiCDCDevice::peek()
     {
         return RingBuffer_Peek(&rxBuf);
     }
+    refresh();
 }
 
 
 void DigiCDCDevice::task(void)
 {    
  
-  usbPollWrapper();
+  refresh();
 
 }
 
 void DigiCDCDevice::refresh(void)
 {    
- 
+  _delay_ms(1);
   usbPollWrapper();
-  
-
 }
 
 
@@ -112,7 +119,7 @@ void DigiCDCDevice::end(void)
 }
 
 DigiCDCDevice::operator bool() {
-    usbPollWrapper();
+    refresh();
     return true;
 }
 

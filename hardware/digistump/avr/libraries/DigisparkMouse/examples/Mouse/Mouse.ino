@@ -6,7 +6,6 @@
 
 void setup() {
   DigiMouse.begin(); //start or reenumerate USB - BREAKING CHANGE from old versions that didn't require this
-  //while(!DigiMouse.isConnected()) {} //don't run sketch until USB is connected
 }
 
 void loop() {
@@ -32,8 +31,11 @@ void loop() {
 
   //or you can use these functions to click
   DigiMouse.rightClick();
+  DigiMouse.delay(500);
   DigiMouse.leftClick();
+  DigiMouse.delay(500);
   DigiMouse.middleClick();
+  DigiMouse.delay(500);
 
   //for compatability with other libraries you can also use DigiMouse.move(X, Y, scroll, buttons)
 }

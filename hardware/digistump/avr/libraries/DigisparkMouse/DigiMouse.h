@@ -150,33 +150,25 @@ void clearMove() {
 class DigiMouseDevice {
  public:
 	DigiMouseDevice () {
-		
-	}
 
-	char isConnected()
-	{
-		return usb_hasCommed;
-	}
-
-	void begin(){
-
-		cli();
-		PORTB &= ~(_BV(USB_CFG_DMINUS_BIT) | _BV(USB_CFG_DPLUS_BIT));
-		usbDeviceDisconnect();
-		_delay_ms(250);
-		usbDeviceConnect();
-		
 		rt_usbHidReportDescriptor = mouse_usbHidReportDescriptor;
 		rt_usbHidReportDescriptorSize = sizeof(mouse_usbHidReportDescriptor);
 		rt_usbDeviceDescriptor = usbDescrDevice;
 		rt_usbDeviceDescriptorSize = sizeof(usbDescrDevice);
-		
+	}
+
+	void begin() {
+		cli();
+		usbDeviceDisconnect();
+		_delay_ms(200);
+		usbDeviceConnect();	
 		
 		usbInit();
 		
 		sei();
 		last_report_time = millis();
 	}
+	
 
 	
 	void refresh() {
@@ -293,7 +285,6 @@ extern "C"{
 	// USB_PUBLIC uchar usbFunctionSetup
 	
 	uchar usbFunctionSetup(uchar data[8]) {
-		usb_hasCommed = 1;
 		usbRequest_t *rq = (usbRequest_t *)data;
 	
 		usbMsgPtr = reportBuffer;
@@ -344,4 +335,4 @@ extern "C"{
 #endif
 
 
-#endif // __DigiKeyboard_h__
+#endif // __DigiMouse_h__

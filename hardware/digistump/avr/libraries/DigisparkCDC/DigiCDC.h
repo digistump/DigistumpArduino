@@ -47,10 +47,6 @@ class DigiCDCDevice  : public Stream {
         virtual int read(void);
         virtual void flush(void);
         virtual size_t write(uint8_t);
-        inline size_t write(unsigned long n) { return write((uint8_t)n); }
-        inline size_t write(long n) { return write((uint8_t)n); }
-        inline size_t write(unsigned int n) { return write((uint8_t)n); }
-        inline size_t write(int n) { return write((uint8_t)n); }
         using Print::write;
         operator bool();
     private:
