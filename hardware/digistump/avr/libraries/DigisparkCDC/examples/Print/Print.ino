@@ -2,14 +2,18 @@
 void setup() {                
   // initialize the digital pin as an output.
   SerialUSB.begin(); 
+  /*
+  remember the SerialUSB starts as soon as you call begin 
+  and doesn't restart the board when you open the serial monitor 
+  (like the uno does) - so if you print to it and you don't 
+  have a serial monitor open that text is lost.
+  */
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
   
-  if (SerialUSB.available()) {
-    SerialUSB.write(SerialUSB.read());
-  }
+  SerialUSB.println(F("TEST!")); //wrap your strings in F() to save ram!
   
    //SerialUSB.delay(10);
    /*
