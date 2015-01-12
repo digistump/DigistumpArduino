@@ -42,6 +42,10 @@
 #define MISO 8
 #define SCK  11
 
+
+static const uint8_t CHANNELA = TIMER1A;
+static const uint8_t CHANNELB = TIMER1B;
+
 static const uint8_t SDA = 0;
 static const uint8_t SCL = 2;
 
@@ -203,9 +207,9 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] =
 {
 	TIMER1A, 
 	TIMER1B,
-	NOT_ON_TIMER,
-	NOT_ON_TIMER,
-	NOT_ON_TIMER,
+	TIMER1A,
+	TIMER1A,
+	TIMER1B,
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,

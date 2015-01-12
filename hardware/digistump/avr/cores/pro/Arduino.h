@@ -103,6 +103,10 @@ int digitalRead(uint8_t);
 int analogRead(uint8_t);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
+void pwmWrite(uint8_t, int);
+void pwmConnect(uint8_t, int);
+void pwmDisconnect(uint8_t, int);
+void pwmReset(void);
 
 unsigned long millis(void);
 unsigned long micros(void);

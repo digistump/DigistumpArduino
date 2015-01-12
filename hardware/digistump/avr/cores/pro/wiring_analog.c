@@ -45,6 +45,8 @@ void analogReference(uint8_t mode)
   analog_reference = mode;
 }
 
+
+
 int analogRead(uint8_t pin)
 {
   #if defined( NUM_DIGITAL_PINS )
@@ -83,6 +85,80 @@ int analogRead(uint8_t pin)
   return LOW;
   #endif
 }
+
+void pwmReset()
+{
+  cbi(TCCR1D, OC1AV);
+  cbi(TCCR1D, OC1AU);
+  cbi(TCCR1D, OC1AW);
+  cbi(TCCR1D, OC1AX);
+  cbi(TCCR1D, OC1BV);
+  cbi(TCCR1D, OC1BU);
+  cbi(TCCR1D, OC1BW);
+  cbi(TCCR1D, OC1BX);
+}
+void pwmWrite(uint8_t channel, int val)
+{
+  if( channel == TIMER1A){
+    // connect pwm to pin on timer 1, channel A
+    sbi(TCCR1A, COM1A1);
+    sbi(TCCR1A, WGM10);
+    cbi(TCCR1A, COM1A0);
+    sbi(TCCR1B, WGM10);
+    sbi(TCCR1B, CS11);
+    //sbi(TCCR1B, CS10);
+    OCR1A = val; // set pwm duty
+  } else if( channel == TIMER1B){
+    // connect pwm to pin on timer 1, channel B
+    sbi(TCCR1A, COM1B1);
+    sbi(TCCR1A, WGM10);
+    cbi(TCCR1A, COM1B0);
+    sbi(TCCR1B, WGM10);
+    sbi(TCCR1B, CS11);
+    //sbi(TCCR1B, CS10);
+    OCR1B = val; // set pwm duty
+  } 
+}
+
+void pwmConnect(uint8_t pin)
+{
+  pinMode(pin,OUTPUT);
+  if(pin == 2)
+    sbi(TCCR1D, OC1AV);
+  else if(pin == 0)
+    sbi(TCCR1D, OC1AU);
+  //  cbi(TCCR1D, OC1AW);//used by crystal
+  else if(pin == 3)
+    sbi(TCCR1D, OC1AX);
+  else if(pin == 4)
+    sbi(TCCR1D, OC1BV);
+  else if(pin == 1)
+    sbi(TCCR1D, OC1BU);
+  //  cbi(TCCR1D, OC1BW);//used by crystal
+  //  sbi(TCCR1D, OC1BX);//reset pin
+
+}
+void pwmDisconnect(uint8_t pin)
+{
+  pinMode(pin,OUTPUT);
+  if(pin == 2)
+    cbi(TCCR1D, OC1AV);
+  else if(pin == 0)
+    cbi(TCCR1D, OC1AU);
+  //  cbi(TCCR1D, OC1AW);//used by crystal
+  else if(pin == 3)
+    cbi(TCCR1D, OC1AX);
+  else if(pin == 4)
+    cbi(TCCR1D, OC1BV);
+  else if(pin == 1)
+    cbi(TCCR1D, OC1BU);
+  //  cbi(TCCR1D, OC1BW);//used by crystal
+  //  cbi(TCCR1D, OC1BX);//reset pin
+
+}
+
+
+
 // Right now, PWM output only works on the pins with
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
@@ -129,9 +205,18 @@ void analogWrite(uint8_t pin, int val)
 		//sbi(TCCR1B, CS10);
 
 		cbi(TCCR1D, OC1AV);
-		sbi(TCCR1D, OC1AU);
+		cbi(TCCR1D, OC1AU);
 		cbi(TCCR1D, OC1AW);
 		cbi(TCCR1D, OC1AX);
+
+    if(pin == 2)
+      sbi(TCCR1D, OC1AV);
+    else if(pin == 0)
+      sbi(TCCR1D, OC1AU);
+    else if(pin == 3)
+      sbi(TCCR1D, OC1AX);
+
+
 
 		OCR1A = val; // set pwm duty
 	} else
@@ -150,16 +235,17 @@ void analogWrite(uint8_t pin, int val)
     //sbi(TCCR1B, CS10);
 
 		cbi(TCCR1D, OC1BV);
-		sbi(TCCR1D, OC1BU);
+		cbi(TCCR1D, OC1BU);
 		cbi(TCCR1D, OC1BW);
 		cbi(TCCR1D, OC1BX);
+    
+    if(pin == 4)
+      sbi(TCCR1D, OC1BV);
+    else if(pin == 1)
+      sbi(TCCR1D, OC1BU);
 
 		OCR1B = val; // set pwm duty
 	} else
-
-
-
-	
     {
       if (val < 128)
       {
