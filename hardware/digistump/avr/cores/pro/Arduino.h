@@ -103,10 +103,6 @@ int digitalRead(uint8_t);
 int analogRead(uint8_t);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
-void pwmWrite(uint8_t, int);
-void pwmConnect(uint8_t, int);
-void pwmDisconnect(uint8_t, int);
-void pwmReset(void);
 
 unsigned long millis(void);
 unsigned long micros(void);
@@ -163,6 +159,9 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define TIMER1A 3
 #define TIMER1B 4
 #define TIMER1D 5
+
+#define CHANNELA 3; //TIMER1A
+#define CHANNELB 4; //TIMER1B
 
 #include "pins_arduino.h"
 

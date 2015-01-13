@@ -42,9 +42,6 @@
 #define MISO 8
 #define SCK  11
 
-static const uint8_t CHANNELA = TIMER1A;
-static const uint8_t CHANNELB = TIMER1B;
-
 static const uint8_t SDA = 0;
 static const uint8_t SCL = 2;
 
