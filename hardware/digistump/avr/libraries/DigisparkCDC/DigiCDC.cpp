@@ -16,7 +16,7 @@ and Digistump LLC (digistump.com)
 
 uchar              sendEmptyFrame;
 static uchar       intr3Status;    /* used to control interrupt endpoint transmissions */
-
+uint8_t            cdcDelay = 45; //9 works if sending short strings only or not using F() - set with setDelay
 
 DigiCDCDevice::DigiCDCDevice(void){}
 
@@ -42,6 +42,11 @@ void DigiCDCDevice::begin(){
     usbBegin();
 
 }
+void DigiCDCDevice::setDelay(uint8_t delay){
+
+    cdcDelay = delay;
+
+}
 size_t DigiCDCDevice::write(uint8_t c)
 {
     if(RingBuffer_IsFull(&txBuf))
@@ -52,7 +57,7 @@ size_t DigiCDCDevice::write(uint8_t c)
     else
     {
         RingBuffer_Insert(&txBuf,c);
-        DigiCDCDevice::delay(45); //ouch its slow but it ensures it will work no matter how long of a string is thrown at it
+        DigiCDCDevice::delay(cdcDelay); //ouch its slow but it ensures it will work no matter how long of a string is thrown at it
         return 1;
     }
     
