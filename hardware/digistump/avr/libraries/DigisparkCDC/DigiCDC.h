@@ -38,7 +38,6 @@ class DigiCDCDevice  : public Stream {
     public:
         DigiCDCDevice();
         void begin(), begin(unsigned long x);
-        void setDelay(uint8_t delay);
         void end();
         void refresh();
         void task();
