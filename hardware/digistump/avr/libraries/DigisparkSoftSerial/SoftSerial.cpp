@@ -4,8 +4,8 @@ the Pin Change Interrupt Vector.
 <SoftwareSerial> monopolizes the Pin Change Interrupt Vector and don't allow sharing.
 With <SoftSerial>, it's possible. Don't forget to #include <TinyPinChange> in your sketch!
 Additionally, for small devices such as ATtiny85 (Digispark), it's possible to declare the same pin for TX and RX.
-Data direction is set by using the new txMode() and rxMode methods.
-RC Navy (2012-2013): http://p.loussouarn.free.fr
+Data direction is set by using the new txMode() and rxMode() methods.
+RC Navy (2012-2015): http://p.loussouarn.free.fr
 
 SoftwareSerial.cpp (formerly NewSoftSerial.cpp) - 
 Multi-instance software serial library for Arduino/Wiring
@@ -41,8 +41,15 @@ http://arduiniana.org.
 // oscilloscope or logic analyzer.  Beware: it also slightly modifies
 // the bit times, so don't rely on it too much at high baud rates
 #define _DEBUG 0
-#define _DEBUG_PIN1 11
-#define _DEBUG_PIN2 13
+#define _DEBUG_PIN1 0//11
+#define _DEBUG_PIN2 1//13
+#define FAST_DEBUG //less intrusive
+#ifndef cbi
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif 
 // 
 // Includes
 // 
@@ -67,46 +74,41 @@ typedef struct _DELAY_TABLE
 static const DELAY_TABLE PROGMEM table[] = 
 {
   //  baud    rxcenter   rxintra    rxstop    tx
-  { 115200,   1,         17,        17,       12,    },
-  { 57600,    10,        37,        37,       33,    },
-  { 38400,    25,        57,        57,       54,    },
-  { 31250,    31,        70,        70,       68,    },
-  { 28800,    34,        77,        77,       74,    },
-  { 19200,    54,        117,       117,      114,   },
-  { 14400,    74,        156,       156,      153,   },
-  { 9600,     114,       236,       236,      233,   },
+  { 115200,   0,         14,        14,       12,    },
+  { 57600,    5,         34,        34,       32,    },
+  { 38400,    15,        54,        54,       52,    },
+  { 31250,    23,        67,        67,       65,    },/* By interpolation */
+  { 28800,    26,        74,        74,       72,    },/* By interpolation */
+  { 19200,    44,        113,       113,      112,   },
+  { 14400,    74,        156,       153,      153,   },/* By interpolation */
+  { 9600,     114,       234,       234,      233,   },
   { 4800,     233,       474,       474,      471,   },
-  { 2400,     471,       950,       950,      947,   },
-  { 1200,     947,       1902,      1902,     1899,  },
+  { 2400,     471,       940,       940,      945,   },
+  { 1200,     947,       1902,      1902,     1895,  },
   { 300,      3804,      7617,      7617,     7614,  },
 };
-
-const int XMIT_START_ADJUSTMENT = 5;
-//PL{ table from http://digistump.com/board/index.php/topic,212.msg1214/topicseen.html#msg1214
+const int XMIT_START_ADJUSTMENT = 0;
 #elif F_CPU == 16500000
-
 
 static const DELAY_TABLE PROGMEM table[] = 
 {
   //  baud    rxcenter   rxintra    rxstop    tx
-  { 115200,   1,         18,        18,       12,    },
-  { 57600,    10,        38,        38,       34,    },
-  { 38400,    26,        59,        59,       56,    },
-  { 31250,    32,        72,        72,       70,    },
-  { 28800,    35,        79,        79,       76,    },
-  { 19200,    56,        121,       121,      118,   },
-  { 14400,    76,        161,       161,      158,   },
-  { 9600,     118,       243,       243,      240,   },
-  { 4800,     240,       489,       489,      486,   },
-  { 2400,     486,       980,       980,      977,   },
-  { 1200,     977,       1961,      1961,     1958,  },
+  { 115200,   0,         15,        15,       13,    },
+  { 57600,    3,         35,        35,       33,    },
+  { 38400,    12,        56,        56,       54,    },
+  { 31250,    32,        72,        72,       70,    },/* By interpolation */
+  { 28800,    35,        79,        79,       76,    },/* By interpolation */
+  { 19200,    52,        118,       118,      116,   },
+  { 14400,    76,        161,       161,      158,   },/* By interpolation */
+  { 9600,     118,       241,       241,      238,   },
+  { 4800,     240,       487,       487,      485,   },
+  { 2400,     486,       976,       976,      974,   },
+  { 1200,     977,       1961,      1961,     1956,  },
   { 600,      1961,      3923,      3923,     3919,  },
   { 300,      3923,      7855,      7855,     7852,  },
 };
 
-
-const int XMIT_START_ADJUSTMENT = 5;
-//PL}
+const int XMIT_START_ADJUSTMENT = 0;
 #elif F_CPU == 8000000
 
 static const DELAY_TABLE table[] PROGMEM = 
@@ -154,7 +156,7 @@ const int XMIT_START_ADJUSTMENT = 6;
 
 #else
 
-#error This version of SoftSerial supports only 20, 16 and 8MHz processors
+#error This version of SoftSerial supports only 20, 16, 16.5 and 8MHz processors
 
 #endif
 
@@ -171,9 +173,12 @@ volatile uint8_t SoftSerial::_receive_buffer_head = 0;
 //
 // This function generates a brief pulse
 // for debugging or measuring on an oscilloscope.
+#if _DEBUG
+#if defined(FAST_DEBUG)
+#define DebugPulse(a, bit) sbi(PINB, bit)
+#else
 inline void DebugPulse(uint8_t pin, uint8_t count)
 {
-#if _DEBUG
   volatile uint8_t *pport = portOutputRegister(digitalPinToPort(pin));
 
   uint8_t val = *pport;
@@ -182,9 +187,14 @@ inline void DebugPulse(uint8_t pin, uint8_t count)
     *pport = val | digitalPinToBitMask(pin);
     *pport = val;
   }
-#endif
 }
-
+#endif
+#else
+// no debug
+inline void DebugPulse(uint8_t pin, uint8_t count)
+{
+}
+#endif
 //
 // Private methods
 //
@@ -369,7 +379,6 @@ SoftSerial::SoftSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_log
   _buffer_overflow(false),
   _inverse_logic(inverse_logic)
 {
-//  setTX(transmitPin);
   setRX(receivePin);
   setTX(transmitPin);
   TinyPinChange_RegisterIsr(receivePin, SoftSerial::handle_interrupt);

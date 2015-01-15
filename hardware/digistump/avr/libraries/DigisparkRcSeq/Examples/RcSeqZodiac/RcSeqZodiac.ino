@@ -32,9 +32,9 @@ Cette sequence utilise:
 /* ETAPE N°1: Inclure les 4 librairies necessaires */
 /***************************************************/
 #include <RcSeq.h>
-#include <TinyPinChange.h>  /* Ne pas oublier d'inclure la librairie <TinyPinChange>  qui est utilisee par la librairie <RcSeq> */
-#include <SoftRcPulseIn.h>  /* Ne pas oublier d'inclure la librairie <SoftRcPulseIn>  qui est utilisee par la librairie <RcSeq> */
-#include <SoftRcPulseOut.h> /* Ne pas oublier d'inclure la librairie <SoftRcPulseOut> qui est utilisee par la librairie <RcSeq> */
+#include <TinyPinChange.h>
+#include <SoftRcPulseIn.h>
+#include <SoftRcPulseOut.h>
 
 /*****************************************************/
 /* ETAPE N°2: Enumeration des signaux de commande RC */
@@ -121,23 +121,23 @@ Ordre                  <---DUREE_MONTEE_PONT_HAUT_MS--> <--DUREE_ROTATION_PONT_M
 /* Il est possible d'inclure des actions courtes. Il suffit d'utiliser la macro ACTION_COURTE_A_EFFECTUER() en donnant le nom de la fonction a appeler et le   */
 /* moment ou l'action doit avoir lieu. Dans cet exemple, la LED s'allume pendant que les servos tournent et s'eteint pendant la pause de 6 secondes.           */
 /***************************************************************************************************************************************************************/
-SequenceSt_t SequencePlus2[] PROGMEM = {
-	ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_MONTEE_PONT_HAUT_MS)
+const SequenceSt_t SequencePlus2[] PROGMEM = {
+	ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_MONTEE_PONT_HAUT_MS)
 	/* Montee du Zodiac du pont vers la position haute */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_PONT,ELEVATION_POS_HAUT,DEMARRAGE_MONTEE_PONT_HAUT_MS,DUREE_MONTEE_PONT_HAUT_MS,DEM_ARRET_POUR_CENT)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_PONT, ELEVATION_POS_HAUT, DEMARRAGE_MONTEE_PONT_HAUT_MS, DUREE_MONTEE_PONT_HAUT_MS, DEM_ARRET_POUR_CENT)
 	/* Rotation Grue du pont vers la mer */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT,AZIMUT_POS_PONT,AZIMUT_POS_MER,DEMARRAGE_ROTATION_PONT_MER_MS,DUREE_ROTATION_PONT_MER_MS,DEM_ARRET_POUR_CENT)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT, AZIMUT_POS_PONT, AZIMUT_POS_MER, DEMARRAGE_ROTATION_PONT_MER_MS, DUREE_ROTATION_PONT_MER_MS, DEM_ARRET_POUR_CENT)
 	/* Descente du Zodiac depuis la position haute vers la la mer */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_HAUT,ELEVATION_POS_MER,DEMARRAGE_DESCENTE_HAUT_MER_MS,DUREE_DESCENTE_HAUT_MER_MS,DEM_ARRET_POUR_CENT)
-	ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_DESCENTE_HAUT_MER_MS+DUREE_DESCENTE_HAUT_MER_MS)
-	ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_MONTEE_MER_HAUT_MS)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_HAUT, ELEVATION_POS_MER, DEMARRAGE_DESCENTE_HAUT_MER_MS, DUREE_DESCENTE_HAUT_MER_MS, DEM_ARRET_POUR_CENT)
+	ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_DESCENTE_HAUT_MER_MS + DUREE_DESCENTE_HAUT_MER_MS)
+	ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_MONTEE_MER_HAUT_MS)
 	/* Montee du Zodiac de la mer vers la position haute */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_MER,ELEVATION_POS_HAUT,DEMARRAGE_MONTEE_MER_HAUT_MS,DUREE_MONTEE_MER_HAUT_MS,DEM_ARRET_POUR_CENT)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_MER, ELEVATION_POS_HAUT, DEMARRAGE_MONTEE_MER_HAUT_MS, DUREE_MONTEE_MER_HAUT_MS, DEM_ARRET_POUR_CENT)
 	/* Rotation Grue de la mer vers le pont */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT,AZIMUT_POS_MER,AZIMUT_POS_PONT,DEMARRAGE_ROTATION_MER_PONT_MS,DUREE_ROTATION_MER_PONT_MS,DEM_ARRET_POUR_CENT)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT, AZIMUT_POS_MER, AZIMUT_POS_PONT, DEMARRAGE_ROTATION_MER_PONT_MS, DUREE_ROTATION_MER_PONT_MS, DEM_ARRET_POUR_CENT)
 	/* Descente du Zodiac de la position haute vers le pont */
-	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_HAUT,ELEVATION_POS_PONT,DEMARRAGE_DESCENTE_HAUT_PONT_MS,DUREE_DESCENTE_HAUT_PONT_MS,DEM_ARRET_POUR_CENT)                                    
-	ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_DESCENTE_HAUT_PONT_MS+DUREE_DESCENTE_HAUT_PONT_MS)
+	MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_HAUT, ELEVATION_POS_PONT, DEMARRAGE_DESCENTE_HAUT_PONT_MS, DUREE_DESCENTE_HAUT_PONT_MS, DEM_ARRET_POUR_CENT)                                    
+	ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_DESCENTE_HAUT_PONT_MS + DUREE_DESCENTE_HAUT_PONT_MS)
     };
 
 #define LED		13
@@ -158,7 +158,7 @@ void setup()
 /**************************************************************************************/
 /* ETAPE N°13: declarer le(s) signal(aux) de commande RC avec leur N° de pin digitale */
 /**************************************************************************************/
-    RcSeq_DeclareSignal(SIGNAL_RC,BROCHE_SIGNAL_RECEPTEUR);
+    RcSeq_DeclareSignal(SIGNAL_RC, BROCHE_SIGNAL_RECEPTEUR);
 
 /******************************************************************************************/
 /* ETAPE N°14: que le signal RC est associe a un manche qui a NBR_RC_IMPULSIONS positions */
@@ -174,7 +174,7 @@ void setup()
 /**************************************************************************************************************************/
 /* ETAPE N°16: declarer le signal de commande de sequence, le niveau du manche, et la sequence ou action courte a appeler */
 /**************************************************************************************************************************/
-    RcSeq_DeclareCommandeEtSequence(SIGNAL_RC, RC_IMPULSION_NIVEAU_PLUS_2, RC_SEQUENCE(SequencePlus2)); // Voici comment declarer une sequence actionnee par une impulsion Niveau Plus 2 (manche en position extreme pendant au moins 250 ms)
+    RcSeq_DeclareCommandeEtSequence(SIGNAL_RC, RC_IMPULSION_NIVEAU_PLUS_2, RC_SEQUENCE(SequencePlus2), NULL); // Voici comment declarer une sequence actionnee par une impulsion Niveau Plus 2 (manche en position extreme pendant au moins 250 ms)
 
     pinMode(LED, OUTPUT);
     RcSeq_DeclareCommandeEtActionCourte(SIGNAL_RC, RC_IMPULSION_NIVEAU_MOINS_1, InverseLed); // Voici comment declarer une action actionnee par une impulsion Niveau Moins 1 (manche en position mi-course pendant au moins 250 ms)

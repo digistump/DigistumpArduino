@@ -52,7 +52,7 @@ boolean  LedState=HIGH;
 
 void setup()
 {
-#if !defined(__AVR_ATtiny24__) && !defined(__AVR_ATtiny44__) && !defined(__AVR_ATtiny84__) && !defined(__AVR_ATtiny25__) && !defined(__AVR_ATtiny45__) && !defined(__AVR_ATtiny85__)
+#if !defined(__AVR_ATtiny24__) && !defined(__AVR_ATtiny44__) && !defined(__AVR_ATtiny84__) && !defined(__AVR_ATtiny25__) && !defined(__AVR_ATtiny45__) && !defined(__AVR_ATtiny85__) && !defined(__AVR_ATtiny167__)
   Serial.begin(9600);
   Serial.print("SoftRcPulseIn library V");Serial.print(SoftRcPulseIn::LibTextVersionRevision());Serial.print(" demo"); /* For arduino UNO which has an hardware UART, display the library version in the console */
 #endif
@@ -74,8 +74,8 @@ static uint16_t Width_us=NEUTRAL_US; /* Static to keep the value at the next loo
     ServoMotor[INVERTED].write_us((NEUTRAL_US*2)-Width_us); /* Inverted Signal */
     SoftRcPulseOut::refresh(NOW); /* NOW argument (=1) allows to synchronize outgoing pulses with incoming pulses */
     RxPulseStartMs=millis();      /* Restart the Chrono for Pulse */
-#if !defined(__AVR_ATtiny24__) && !defined(__AVR_ATtiny44__) && !defined(__AVR_ATtiny84__) && !defined(__AVR_ATtiny25__) && !defined(__AVR_ATtiny45__) && !defined(__AVR_ATtiny85__)
-    Serial.print("Pulse=");Serial.println(Largeur_us); /* For arduino UNO which has an hardware UART, display the library version in the console */
+#if !defined(__AVR_ATtiny24__) && !defined(__AVR_ATtiny44__) && !defined(__AVR_ATtiny84__) && !defined(__AVR_ATtiny25__) && !defined(__AVR_ATtiny45__) && !defined(__AVR_ATtiny85__) && !defined(__AVR_ATtiny167__)
+    Serial.print("Pulse=");Serial.println(Width_us); /* For arduino UNO which has an hardware UART, display the library version in the console */
 #endif
   }
   else

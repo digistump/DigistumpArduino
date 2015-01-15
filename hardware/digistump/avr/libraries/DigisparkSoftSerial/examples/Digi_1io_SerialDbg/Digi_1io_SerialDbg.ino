@@ -43,10 +43,12 @@
 #define DEBUG_TX_RX_PIN         2 //Adjust here your Tx/Rx debug pin
  
 SoftSerial MyDbgSerial(DEBUG_TX_RX_PIN, DEBUG_TX_RX_PIN, true); //true allows to connect to a regular RS232 without RS232 line driver
- 
+
+#define SERIAL_BAUD_RATE        57600 //Adjust here the serial rate (57600 is the higher supported rate)
+
 void setup()
 {
-  MyDbgSerial.begin(38400); //After MyDbgSerial.begin(), the serial port is in rxMode by default
+  MyDbgSerial.begin(SERIAL_BAUD_RATE); //After MyDbgSerial.begin(), the serial port is in rxMode by default
   MyDbgSerial.txMode(); //Before sending a message, switch to txMode
   MyDbgSerial.println(F("\nDebug enabled"));
   MyDbgSerial.rxMode(); //switch to rxMode to be ready to receive some commands

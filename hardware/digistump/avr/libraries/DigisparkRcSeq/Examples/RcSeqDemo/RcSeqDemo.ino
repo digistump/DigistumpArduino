@@ -1,7 +1,7 @@
 #include <RcSeq.h>
-#include <TinyPinChange.h>  /* Ne pas oublier d'inclure la librairie <TinyPinChange>  qui est utilisee par la librairie <RcSeq> */
-#include <SoftRcPulseIn.h>  /* Ne pas oublier d'inclure la librairie <SoftRcPulseIn>  qui est utilisee par la librairie <RcSeq> */
-#include <SoftRcPulseOut.h> /* Ne pas oublier d'inclure la librairie <SoftRcPulseOut> qui est utilisee par la librairie <RcSeq> */
+#include <TinyPinChange.h>
+#include <SoftRcPulseIn.h>
+#include <SoftRcPulseOut.h>
 
 /*
 IMPORTANT:
@@ -25,16 +25,16 @@ enum {RC_VOIE1, RC_VOIE2, RC_VOIE3, NBR_VOIES_RC}; /* Declaration des voies */
 
 enum {BP1, BP2, NBR_BP}; /* Declaration des Boutons-Poussoirs (On peut aller jusqu'à BP8) */
 
-enum {POS_MINUS1, POS_PLUS1,NBR_POS}; /* Declaration des positions du Manche on peut aller de POS_MOINS2 à POS_PLUS2 (4 Positions actives Max)*/
+enum {POS_MINUS1, POS_PLUS1, NBR_POS}; /* Declaration des positions du Manche on peut aller de POS_MOINS2 à POS_PLUS2 (4 Positions actives Max)*/
 
 
 /* Declaration d'un clavier "Maison": les impulsions des Boutons-Poussoirs n'ont pas besoin d'etre equidistantes */
 enum {BP_MAISON1, BP_MAISON2, BP_MAISON3, NBR_BP_MAISON};
 #define TOLERANCE  40 /* Tolerance en + ou en - (en micro-seconde) */
-KeyMap_t ClavierMaison[] PROGMEM ={  {VALEUR_CENTRALE_US(1100,TOLERANCE)}, /* BP_MAISON1: 1100 +/-40 us */
-                                     {VALEUR_CENTRALE_US(1300,TOLERANCE)}, /* BP_MAISON2: 1300 +/-40 us */
-                                     {VALEUR_CENTRALE_US(1700,TOLERANCE)}, /* BP_MAISON3: 1700 +/-40 us */
-                                  };
+const KeyMap_t ClavierMaison[] PROGMEM ={  {VALEUR_CENTRALE_US(1100, TOLERANCE)}, /* BP_MAISON1: 1100 +/-40 us */
+                                           {VALEUR_CENTRALE_US(1300, TOLERANCE)}, /* BP_MAISON2: 1300 +/-40 us */
+                                           {VALEUR_CENTRALE_US(1700, TOLERANCE)}, /* BP_MAISON3: 1700 +/-40 us */
+                                        };
 
 enum {AZIMUT=0, ELEVATION , NBR_SERVO}; /* Delaration de tous les servos, 2 dans cet exemple (On peut déclaer jusqu'à 8 servos) */
 
@@ -80,23 +80,23 @@ enum {AZIMUT=0, ELEVATION , NBR_SERVO}; /* Delaration de tous les servos, 2 dans
 #define DEM_ARRET_POUR_CENT                  5 /* Pourcentage du mouvement devant etre effectue a mi-vitesse pour demarrage servo et arret servo (Soft start et Soft stop) */
 
 /* Declaration de la table de sequence des mouvements des servo et des actions courtes */
-SequenceSt_t SequenceServoEtActionCourte[] PROGMEM = {
-    ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_MONTEE_PONT_HAUT_MS)
+const SequenceSt_t SequenceServoEtActionCourte[] PROGMEM = {
+    ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_MONTEE_PONT_HAUT_MS)
     /* Montee du Zodiac du pont vers la position haute */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_PONT,ELEVATION_POS_HAUT,DEMARRAGE_MONTEE_PONT_HAUT_MS,DUREE_MONTEE_PONT_HAUT_MS,DEM_ARRET_POUR_CENT)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_PONT, ELEVATION_POS_HAUT, DEMARRAGE_MONTEE_PONT_HAUT_MS, DUREE_MONTEE_PONT_HAUT_MS, DEM_ARRET_POUR_CENT)
     /* Rotation Grue du pont vers la mer */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT,AZIMUT_POS_PONT,AZIMUT_POS_MER,DEMARRAGE_ROTATION_PONT_MER_MS,DUREE_ROTATION_PONT_MER_MS,DEM_ARRET_POUR_CENT)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT, AZIMUT_POS_PONT, AZIMUT_POS_MER, DEMARRAGE_ROTATION_PONT_MER_MS, DUREE_ROTATION_PONT_MER_MS, DEM_ARRET_POUR_CENT)
     /* Descente du Zodiac depuis la position haute vers la la mer */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_HAUT,ELEVATION_POS_MER,DEMARRAGE_DESCENTE_HAUT_MER_MS,DUREE_DESCENTE_HAUT_MER_MS,DEM_ARRET_POUR_CENT)
-    ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_DESCENTE_HAUT_MER_MS+DUREE_DESCENTE_HAUT_MER_MS)
-    ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_MONTEE_MER_HAUT_MS)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_HAUT, ELEVATION_POS_MER, DEMARRAGE_DESCENTE_HAUT_MER_MS, DUREE_DESCENTE_HAUT_MER_MS, DEM_ARRET_POUR_CENT)
+    ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_DESCENTE_HAUT_MER_MS + DUREE_DESCENTE_HAUT_MER_MS)
+    ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_MONTEE_MER_HAUT_MS)
     /* Montee du Zodiac de la mer vers la position haute */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_MER,ELEVATION_POS_HAUT,DEMARRAGE_MONTEE_MER_HAUT_MS,DUREE_MONTEE_MER_HAUT_MS,DEM_ARRET_POUR_CENT)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_MER, ELEVATION_POS_HAUT, DEMARRAGE_MONTEE_MER_HAUT_MS, DUREE_MONTEE_MER_HAUT_MS, DEM_ARRET_POUR_CENT)
     /* Rotation Grue de la mer vers le pont */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT,AZIMUT_POS_MER,AZIMUT_POS_PONT,DEMARRAGE_ROTATION_MER_PONT_MS,DUREE_ROTATION_MER_PONT_MS,DEM_ARRET_POUR_CENT)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(AZIMUT, AZIMUT_POS_MER, AZIMUT_POS_PONT, DEMARRAGE_ROTATION_MER_PONT_MS, DUREE_ROTATION_MER_PONT_MS, DEM_ARRET_POUR_CENT)
     /* Descente du Zodiac de la position haute vers le pont */
-    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION,ELEVATION_POS_HAUT,ELEVATION_POS_PONT,DEMARRAGE_DESCENTE_HAUT_PONT_MS,DUREE_DESCENTE_HAUT_PONT_MS,DEM_ARRET_POUR_CENT)                                   
-    ACTION_COURTE_A_EFFECTUER(InverseLed,DEMARRAGE_DESCENTE_HAUT_PONT_MS+DUREE_DESCENTE_HAUT_PONT_MS)
+    MVT_AVEC_DEBUT_ET_FIN_MVT_LENTS(ELEVATION, ELEVATION_POS_HAUT, ELEVATION_POS_PONT, DEMARRAGE_DESCENTE_HAUT_PONT_MS, DUREE_DESCENTE_HAUT_PONT_MS, DEM_ARRET_POUR_CENT)                                   
+    ACTION_COURTE_A_EFFECTUER(InverseLed, DEMARRAGE_DESCENTE_HAUT_PONT_MS + DUREE_DESCENTE_HAUT_PONT_MS)
     };
 
 #define LED		13
@@ -114,22 +114,22 @@ void setup()
     RcSeq_DeclareServo(AZIMUT,    BROCHE_SIGNAL_SERVO_AZ);
 
     /* Commande d'une action courte et d'une sequence de servos avec 2 BP du clavier de la VOIE1 */
-    RcSeq_DeclareSignal(RC_VOIE1,BROCHE_SIGNAL_RECEPTEUR_VOIE1);
+    RcSeq_DeclareSignal(RC_VOIE1, BROCHE_SIGNAL_RECEPTEUR_VOIE1);
     RcSeq_DeclareClavier(RC_VOIE1, 1000, 2000, NBR_BP);
     RcSeq_DeclareCommandeEtActionCourte(RC_VOIE1, BP1, InverseLed);
-    RcSeq_DeclareCommandeEtSequence(RC_VOIE1, BP2, RC_SEQUENCE(SequenceServoEtActionCourte));
+    RcSeq_DeclareCommandeEtSequence(RC_VOIE1, BP2, RC_SEQUENCE(SequenceServoEtActionCourte), NULL);
 
     /* Commande d'une action courte et d'une sequence de servos avec le manche de la VOIE2 */
-    RcSeq_DeclareSignal(RC_VOIE2,BROCHE_SIGNAL_RECEPTEUR_VOIE2);
+    RcSeq_DeclareSignal(RC_VOIE2, BROCHE_SIGNAL_RECEPTEUR_VOIE2);
     RcSeq_DeclareManche(RC_VOIE2, 1000, 2000, NBR_POS);
     RcSeq_DeclareCommandeEtActionCourte(RC_VOIE2, POS_MINUS1, InverseLed);
-    RcSeq_DeclareCommandeEtSequence(RC_VOIE2, POS_PLUS1, RC_SEQUENCE(SequenceServoEtActionCourte));
+    RcSeq_DeclareCommandeEtSequence(RC_VOIE2, POS_PLUS1, RC_SEQUENCE(SequenceServoEtActionCourte), NULL);
 
     /* Commande d'une action courte et d'une sequence de servos avec le clavier "maison" de la VOIE3 */
-    RcSeq_DeclareSignal(RC_VOIE3,BROCHE_SIGNAL_RECEPTEUR_VOIE3);
+    RcSeq_DeclareSignal(RC_VOIE3, BROCHE_SIGNAL_RECEPTEUR_VOIE3);
     RcSeq_DeclareClavierMaison(RC_VOIE3, RC_CLAVIER_MAISON(ClavierMaison));
     RcSeq_DeclareCommandeEtActionCourte(RC_VOIE3, BP_MAISON1, InverseLed);
-    RcSeq_DeclareCommandeEtSequence(RC_VOIE3, BP_MAISON3, RC_SEQUENCE(SequenceServoEtActionCourte));
+    RcSeq_DeclareCommandeEtSequence(RC_VOIE3, BP_MAISON3, RC_SEQUENCE(SequenceServoEtActionCourte), NULL);
 
     pinMode(LED, OUTPUT);
 }
@@ -142,13 +142,13 @@ void loop()
 /* Action associee au BP1 de la VOIE1 ou au manche position basse de la VOIE2 ou au BP_MAISON1 de la VOIE3 */
 void InverseLed(void)
 {
-static uint32_t DebutMs=millis(); /* static, pour conserver l'etat entre 2 appels de la fonction */
-static boolean Etat=HIGH;         /* static, pour conserver l'etat entre 2 appels de la fonction */
+static uint32_t DebutMs = millis(); /* static, pour conserver l'etat entre 2 appels de la fonction */
+static boolean Etat = HIGH;         /* static, pour conserver l'etat entre 2 appels de la fonction */
 
   if(millis() - DebutMs >= 500UL) /* Depuis RcSeq V2.0, la tempo inter-commande doit etre geree dans le sketch utilisateur */
   {
-    DebutMs=millis();
+    DebutMs = millis();
     digitalWrite(LED, Etat);
-    Etat=!Etat; /* Au prochain appel de InverseLed(), l'etat de la LED sera inverse */
+    Etat = !Etat; /* Au prochain appel de InverseLed(), l'etat de la LED sera inverse */
   }
 }

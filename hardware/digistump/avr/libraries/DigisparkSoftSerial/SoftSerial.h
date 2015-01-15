@@ -3,7 +3,7 @@
 the Pin Change Interrupt Vector.
 <SoftwareSerial> monopolizes the Pin Change Interrupt Vector and don't allow sharing.
 With <SoftSerial>, it's possible. Don't forget to #include <TinyPinChange> in your sketch!
-RC Navy (2012): http://p.loussouarn.free.fr
+RC Navy (2012-2015): http://p.loussouarn.free.fr
 
 SoftwareSerial.h (formerly NewSoftSerial.h) - 
 Multi-instance software serial library for Arduino/Wiring

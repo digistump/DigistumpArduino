@@ -52,6 +52,8 @@
 #define RX_AUX_GEAR_PIN   0 //Choose here the pin for the RC signal
 #define DEBUG_TX_RX_PIN   1 //Adjust here your Tx/Rx debug pin (Do NOT work on Digispark PIN 5: choose another PIN)
 
+#define SERIAL_BAUD_RATE  57600 //Adjust rate here
+
 SoftRcPulseIn RxAuxGear;    //Choose a name for your RC channel signal
 
 SoftSerial    MyDbgSerial(DEBUG_TX_RX_PIN, DEBUG_TX_RX_PIN, true); //true allows to connect to a regular RS232 without RS232 line driver 
@@ -60,7 +62,7 @@ void setup()
 {
   RxAuxGear.attach(RX_AUX_GEAR_PIN);
   
-  MyDbgSerial.begin(38400); //Do NOT forget to setup your terminal at 38400 (eg: arduino IDE serial monitor)
+  MyDbgSerial.begin(SERIAL_BAUD_RATE); //Do NOT forget to setup your terminal at same baud rate (eg: arduino IDE serial monitor)
   MyDbgSerial.txMode();     //Before sending a message, switch to txMode
   MyDbgSerial.print(F("SoftRcPulseIn lib V"));MyDbgSerial.print(SoftRcPulseIn::LibTextVersionRevision());MyDbgSerial.println(F(" demo"));
 }

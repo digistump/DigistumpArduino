@@ -19,6 +19,8 @@ SoftRcPulseOut myservo;  // create servo object to control a servo
 
 #define REFRESH_PERIOD_MS 20
 
+#define NOW               1
+
 int val;    // variable to read the value from the analog pin 
  
 void setup() 
@@ -32,6 +34,6 @@ void loop()
   val = map(val, 0, 1023, 0, 179);     // scale it to use it with the servo (value between 0 and 180) 
   myservo.write(val);                  // sets the servo position according to the scaled value 
   delay(REFRESH_PERIOD_MS);            // waits for the servo to get there 
-  SoftRcPulseOut::refresh();            // generates the servo pulse
+  SoftRcPulseOut::refresh(NOW);        // generates the servo pulse Now
 }
 

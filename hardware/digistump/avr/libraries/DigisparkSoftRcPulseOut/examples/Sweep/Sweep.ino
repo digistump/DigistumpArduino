@@ -12,6 +12,8 @@ SoftRcPulseOut myservo;  // create servo object to control a servo
 
 #define REFRESH_PERIOD_MS 20
 
+#define NOW               1
+
 int pos = 0;    // variable to store the servo position 
  
 void setup() 
@@ -26,12 +28,12 @@ void loop()
   {                                  // in steps of 1 degree 
     myservo.write(pos);              // tell servo to go to position in variable 'pos' 
     delay(REFRESH_PERIOD_MS);        // waits 20ms for refresh period 
-    SoftRcPulseOut::refresh(1);        // generates the servo pulse
+    SoftRcPulseOut::refresh(NOW);    // generates the servo pulse Now
   } 
   for(pos = 180; pos>=1; pos-=1)     // goes from 180 degrees to 0 degrees 
   {                                
     myservo.write(pos);              // tell servo to go to position in variable 'pos' 
     delay(REFRESH_PERIOD_MS);        // waits 20ms for for refresh period 
-    SoftRcPulseOut::refresh(1);        // generates the servo pulse
+    SoftRcPulseOut::refresh(NOW);    // generates the servo pulse Now
   } 
 } 

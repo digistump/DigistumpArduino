@@ -70,7 +70,7 @@ void setup()
 {
   TinyPinChange_Init();
 
-  MySerial.begin(38400); /* Trick: use a "high" data rate (less time wasted in ISR and for transmitting each character) */
+  MySerial.begin(57600); /* Trick: use a "high" data rate (less time wasted in ISR and for transmitting each character) */
 
   VirtualPortNb  = TinyPinChange_RegisterIsr(FIRST_INPUT,  InterruptFunctionToCall);
   VirtualPortNb_ = TinyPinChange_RegisterIsr(SECOND_INPUT, InterruptFunctionToCall);
@@ -118,7 +118,7 @@ uint16_t LocalFirstInputChangeCount;
 uint16_t LocalSecondInputChangeCount;
 
   /* Blink the built-in LED */
-  if(millis() - LedStartMs >= 500)
+  if(millis() - LedStartMs >= 500UL)
   {
     LedStartMs = millis();
     digitalWrite(LED_PIN, State);
@@ -141,7 +141,7 @@ uint16_t LocalSecondInputChangeCount;
   }
 
   /* Diplay Transition numbers every second */
-  if((millis() - DisplayStartMs >= 1000) && DisplayEnabled)
+  if((millis() - DisplayStartMs >= 1000UL) && DisplayEnabled)
   {
     DisplayStartMs = millis();
     noInterrupts(); /* Mandatory since counters are 16 bits */

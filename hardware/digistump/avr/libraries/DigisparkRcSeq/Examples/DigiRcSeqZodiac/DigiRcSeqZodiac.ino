@@ -17,7 +17,7 @@ This sequence uses:
 IMPORTANT:
 =========
 For this sketch, which is using <DigiUSB> library:
-1) Comment "#define RC_SEQ_WITH_SOFT_RC_PULSE_IN_SUPPORT" in "arduino-1.xx\libraries\RcSeq.h".
+1) Comment "#define RC_SEQ_WITH_SOFT_RC_PULSE_IN_SUPPORT" AND #define RC_SEQ_CONTROL_SUPPORT in "arduino-1.xx\libraries\RcSeq.h".
    This will disable the code to manage incoming RC pulses and save some flash memory.
    RC_SEQ_WITH_SHORT_ACTION_SUPPORT and RC_SEQ_WITH_SOFT_RC_PULSE_OUT_SUPPORT shall be defined
 2) Replace #define RING_BUFFER_SIZE 128 with #define RING_BUFFER_SIZE 32 in "arduino-1.xx\libraries\DigisparkUSB\DigiUSB.h".
@@ -38,17 +38,17 @@ static void ToggleLed(void); /* Declare Short Action: Toggle a LED */
 #include <RcSeq.h>
 #include <SoftRcPulseOut.h>
 
-#define LED_PIN		                1
+#define LED_PIN                     1
 
 /*****************************************************************/
 /* STEP #2: Enumeration of the servos used in the sequence       */
 /*****************************************************************/
-enum {ROTATION_SERVO=0, UP_DOWN_SERVO , SERVO_NB};
+enum {ROTATION_SERVO=0, UP_DOWN_SERVO, SERVO_NB};
 
 /*****************************************************************/
 /* STEP #3: Servos Digital Pins assignment                       */
 /*****************************************************************/
-#define UP_DOWN_SERVO_PIN          2
+#define UP_DOWN_SERVO_PIN           2
 /* /!\ Do not use Pin 3 (used by USB) /!\ */
 /* /!\ Do not use Pin 4 (used by USB) /!\ */
 #define ROTATION_SERVO_PIN          5
@@ -56,12 +56,12 @@ enum {ROTATION_SERVO=0, UP_DOWN_SERVO , SERVO_NB};
 /**************************************************************************************/
 /* STEP #4: Declaration of the angles of the servos for the different motions (in °)  */
 /**************************************************************************************/
-#define UP_DOWN_ON_DECK_POS		120 /* Zodiac on the deck  */
-#define UP_DOWN_ON_AIR_POS		180 /* Zodiac in the air   */
-#define UP_DOWN_ON_SEA_POS		0   /* Zodiac at sea level */
+#define UP_DOWN_ON_DECK_POS         120 /* Zodiac on the deck  */
+#define UP_DOWN_ON_AIR_POS          180 /* Zodiac in the air   */
+#define UP_DOWN_ON_SEA_POS          0   /* Zodiac at sea level */
 
-#define ROTATION_ABOVE_DECK_POS	90  /* crane at deck side  */
-#define ROTATION_ABOVE_SEA_POS		0   /* crane at sea  side  */
+#define ROTATION_ABOVE_DECK_POS     90  /* crane at deck side  */
+#define ROTATION_ABOVE_SEA_POS      0   /* crane at sea  side  */
 
 
 /***************************************************************************************************************************************/
@@ -80,26 +80,26 @@ Order                  <--DECK_TO_AIR_DURATION_MS--> <--DECK_TO_SEA_ROTATION_DUR
 /* STEP #6: With the help of the temporal diagram, declare start up time, the motion duration of servo and optional delay                         */
 /**************************************************************************************************************************************************/
 /* Tune below all the motion duration. Do not forget to add a trailer 'UL' for each value to force them in Unsigned Long type */
-#define START_UP_DECK_TO_AIR_MS		0UL /* 0 for immediate start up, but you can put a delay here. Ex: 2000UL, will delay the startup of the whole sequence after 2 seconds */
-#define DECK_TO_AIR_DURATION_MS		3000UL
+#define START_UP_DECK_TO_AIR_MS           0UL /* 0 for immediate start up, but you can put a delay here. Ex: 2000UL, will delay the startup of the whole sequence after 2 seconds */
+#define DECK_TO_AIR_DURATION_MS	           3000UL
 
-#define START_UP_DECK_TO_SEA_ROTATION_MS	(START_UP_DECK_TO_AIR_MS + DECK_TO_AIR_DURATION_MS)
-#define DECK_TO_SEA_ROTATION_DURATION_MS	3000UL
+#define START_UP_DECK_TO_SEA_ROTATION_MS  (START_UP_DECK_TO_AIR_MS + DECK_TO_AIR_DURATION_MS)
+#define DECK_TO_SEA_ROTATION_DURATION_MS  3000UL
 
-#define START_UP_AIR_TO_SEA_FALLING_MS		(START_UP_DECK_TO_SEA_ROTATION_MS + DECK_TO_SEA_ROTATION_DURATION_MS)
-#define AIR_TO_SEA_FALLING_DURATION_MS		9000UL
+#define START_UP_AIR_TO_SEA_FALLING_MS    (START_UP_DECK_TO_SEA_ROTATION_MS + DECK_TO_SEA_ROTATION_DURATION_MS)
+#define AIR_TO_SEA_FALLING_DURATION_MS    9000UL
 
-#define DELAY_BEFORE_RISING_UP_MS		6000UL
+#define DELAY_BEFORE_RISING_UP_MS         6000UL
 
-#define START_UP_SEA_TO_AIR_RISING_MS		(START_UP_AIR_TO_SEA_FALLING_MS + AIR_TO_SEA_FALLING_DURATION_MS + DELAY_BEFORE_RISING_UP_MS)
-#define SEA_TO_AIR_RISING_DURATION_MS		9000UL
+#define START_UP_SEA_TO_AIR_RISING_MS     (START_UP_AIR_TO_SEA_FALLING_MS + AIR_TO_SEA_FALLING_DURATION_MS + DELAY_BEFORE_RISING_UP_MS)
+#define SEA_TO_AIR_RISING_DURATION_MS     9000UL
 
-#define START_UP_SEA_TO_DECK_ROTATION_MS	(START_UP_SEA_TO_AIR_RISING_MS + SEA_TO_AIR_RISING_DURATION_MS)
-#define SEA_TO_DECK_ROTATION_DURATION_MS	3000UL
+#define START_UP_SEA_TO_DECK_ROTATION_MS  (START_UP_SEA_TO_AIR_RISING_MS + SEA_TO_AIR_RISING_DURATION_MS)
+#define SEA_TO_DECK_ROTATION_DURATION_MS  3000UL
 
 
-#define START_UP_AIR_TO_DECK_FALLING_MS	(START_UP_SEA_TO_DECK_ROTATION_MS + SEA_TO_DECK_ROTATION_DURATION_MS)
-#define AIR_TO_DECK_FALLING_DURATION_MS	3000UL
+#define START_UP_AIR_TO_DECK_FALLING_MS   (START_UP_SEA_TO_DECK_ROTATION_MS + SEA_TO_DECK_ROTATION_DURATION_MS)
+#define AIR_TO_DECK_FALLING_DURATION_MS   3000UL
 
 /********************************************************************************************************************/
 /* STEP #7: Declare here the percentage of motion to be performed at half speed for servo start up and stop         */
@@ -118,7 +118,7 @@ Order                  <--DECK_TO_AIR_DURATION_MS--> <--DECK_TO_SEA_ROTATION_DUR
 /* - Percentage of motion performed at half speed for servo start and servo stop (Soft start and Soft stop) */
 /* Note: START_STOP_PER_CENT not used (MOTION_WITHOUT_SOFT_START_AND_STOP() macro used)                     */
 /************************************************************************************************************/
-SequenceSt_t ZodiacSequence[] PROGMEM = {
+const SequenceSt_t ZodiacSequence[] PROGMEM = {
 	SHORT_ACTION_TO_PERFORM(ToggleLed, START_UP_DECK_TO_AIR_MS) /* Switch ON the Led at the beginning of the sequence */
 	SHORT_ACTION_TO_PERFORM(ToggleLed, START_UP_AIR_TO_DECK_FALLING_MS+AIR_TO_DECK_FALLING_DURATION_MS) /* Switch OFF the Led at the beginning of the sequence: You are not obliged to put this line at the end of the table */
 	/* 1) The crane lifts the pneumatic Zodiac from the deck to the air and stops */
@@ -155,7 +155,7 @@ void setup()
 /**************************************************************************************************************************/
 /* STEP #11: declare the sequence command signal (0), the stick level (0), and the sequence to call                       */
 /**************************************************************************************************************************/
-    RcSeq_DeclareCommandAndSequence(0, 0, RC_SEQUENCE(ZodiacSequence)); /* 0,0 since there's no RC command */
+    RcSeq_DeclareCommandAndSequence(0, 0, RC_SEQUENCE(ZodiacSequence)); /* 0, 0 since there's no RC command */
 }
 
 void loop()
@@ -172,12 +172,12 @@ char RxChar;
 /****************************************************************************************************************/
     if(DigiUSB.available())
     {
-        RxChar=DigiUSB.read();
-        if(RxChar=='g') /* Go ! */
+        RxChar = DigiUSB.read();
+        if(RxChar == 'g') /* Go ! */
         {
             RcSeq_LaunchSequence(ZodiacSequence);
         }
-        if(RxChar=='t') /* Toggle LED ! */
+        if(RxChar == 't') /* Toggle LED ! */
         {
             RcSeq_LaunchShortAction(ToggleLed); /* You can toggle LED during Servo Motion! */
         }
@@ -187,7 +187,7 @@ char RxChar;
 
 static void ToggleLed(void)
 {
-static boolean Status=LOW;
-    Status=!Status; /* Toggle Status */
+static boolean Status = LOW;
+    Status = !Status; /* Toggle Status */
     digitalWrite(LED_PIN, Status);
 }

@@ -19,6 +19,7 @@ SoftRcPulseOut myservo;  // create servo object to control a servo
 
 #define REFRESH_PERIOD_MS 20
 
+#define NOW               1
 
 #define MOY_SUR_1_VALEUR        0
 #define MOY_SUR_2_VALEURS       1
@@ -46,8 +47,8 @@ static int ValMoyennee;
   val = analogRead(POT_PIN);           // reads the value of the potentiometer (value between 0 and 1023) 
   val = map(val, 0, 1023, 0, 179);     // scale it to use it with the servo (value between 0 and 180) 
   MOYENNE(ValMoyennee,val,TAUX_DE_MOYENNAGE);//If there is lots of noise: average with TAUX_DE_MOYENNAGE
-  myservo.write(ValMoyennee);                  // sets the servo position according to the scaled value 
+  myservo.write(ValMoyennee);          // sets the servo position according to the scaled value 
   delay(REFRESH_PERIOD_MS);            // waits for the servo to get there 
-  SoftRcPulseOut::refresh();            // generates the servo pulse
+  SoftRcPulseOut::refresh(NOW);        // generates the servo pulse
 }
 

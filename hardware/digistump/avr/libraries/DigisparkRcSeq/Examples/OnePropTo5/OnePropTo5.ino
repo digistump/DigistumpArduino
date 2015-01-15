@@ -81,11 +81,11 @@ enum {RC_CHANNEL, RC_CHANNEL_NB}; /* Here, as there is a single channel, we coul
 /* Declaration of the custom keyboard": the pulse width of the push buttons do not need to be equidistant */
 enum {PUSH_BUTTON1, PUSH_BUTTON2, PUSH_BUTTON3, PUSH_BUTTON4, PUSH_BUTTON5, PUSH_BUTTON_NBR};
 #define TOLERANCE  40 /* Tolerance  +/- (in microseconds): CAUTION, no overlap allowed between 2 adjacent active areas . active area width = 2 x TOLERANCE (us) */
-KeyMap_t CustomKeyboard[] PROGMEM ={ {CENTER_VALUE_US(1100,TOLERANCE)}, /* PUSH_BUTTON1: +/-40 us */
-                                     {CENTER_VALUE_US(1300,TOLERANCE)}, /* PUSH_BUTTON2: +/-40 us */
-                                     {CENTER_VALUE_US(1500,TOLERANCE)}, /* PUSH_BUTTON3: +/-40 us */
-                                     {CENTER_VALUE_US(1700,TOLERANCE)}, /* PUSH_BUTTON4: +/-40 us */
-                                     {CENTER_VALUE_US(1900,TOLERANCE)}, /* PUSH_BUTTON5: +/-40 us */
+const KeyMap_t CustomKeyboard[] PROGMEM ={ {CENTER_VALUE_US(1100,TOLERANCE)}, /* PUSH_BUTTON1: +/-40 us */
+                                           {CENTER_VALUE_US(1300,TOLERANCE)}, /* PUSH_BUTTON2: +/-40 us */
+                                           {CENTER_VALUE_US(1500,TOLERANCE)}, /* PUSH_BUTTON3: +/-40 us */
+                                           {CENTER_VALUE_US(1700,TOLERANCE)}, /* PUSH_BUTTON4: +/-40 us */
+                                           {CENTER_VALUE_US(1900,TOLERANCE)}, /* PUSH_BUTTON5: +/-40 us */
                                   };
 
 //==============================================================================================

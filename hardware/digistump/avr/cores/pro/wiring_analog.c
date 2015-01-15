@@ -185,15 +185,15 @@ void analogWrite(uint8_t pin, int val)
     uint8_t timer = digitalPinToTimer(pin);
 
 
-/*
-	if( timer == TIMER0B){
-		// connect pwm to pin on timer 0, channel B
-		sbi(TCCR0A, COM0B1);
-		cbi(TCCR0A, COM0B0);
-		OCR0B = val; // set pwm duty
-	} else
-*/
 
+	if( timer == TIMER0A){
+		// connect pwm to pin 8 on timer 0, channel A
+		sbi(TCCR0A, COM0A1);
+		cbi(TCCR0A, COM0A0);
+    sbi(TCCR0A, WGM01);
+    sbi(TCCR0A, WGM00);
+		OCR0A = val; // set pwm duty
+	} else
 
 	if( timer == TIMER1A){
 		// connect pwm to pin on timer 1, channel A

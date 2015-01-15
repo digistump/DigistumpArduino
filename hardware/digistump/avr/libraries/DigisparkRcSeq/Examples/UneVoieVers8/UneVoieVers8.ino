@@ -30,31 +30,31 @@ enum {RC_VOIE, NBR_VOIES_RC}; /* Ici, comme il n'y a qu'une voie, on aurait pu f
 /* Declaration d'un clavier "Maison": les impulsions des Boutons-Poussoirs n'ont pas besoin d'etre equidistantes */
 enum {BP1, BP2, BP3, BP4, BP5, BP6, BP7, BP8, NBR_BP};
 #define TOLERANCE  40 /* Tolerance en + ou en - (en micro-seconde): ATTENTION, il ne doit pas y avoir recouvrement entre 2 zones actives adjascentes. Zone active = 2 x TOLERANCE (us) */
-KeyMap_t ClavierMaison[] PROGMEM ={  {VALEUR_CENTRALE_US(1100,TOLERANCE)}, /* BP1: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1200,TOLERANCE)}, /* BP2: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1300,TOLERANCE)}, /* BP3: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1400,TOLERANCE)}, /* BP4: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1600,TOLERANCE)}, /* BP5: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1700,TOLERANCE)}, /* BP6: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1800,TOLERANCE)}, /* BP7: +/-40 us */
-                                     {VALEUR_CENTRALE_US(1900,TOLERANCE)}, /* BP8: +/-40 us */
-                                  };
+const KeyMap_t ClavierMaison[] PROGMEM ={  {VALEUR_CENTRALE_US(1100,TOLERANCE)}, /* BP1: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1200,TOLERANCE)}, /* BP2: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1300,TOLERANCE)}, /* BP3: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1400,TOLERANCE)}, /* BP4: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1600,TOLERANCE)}, /* BP5: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1700,TOLERANCE)}, /* BP6: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1800,TOLERANCE)}, /* BP7: +/-40 us */
+                                           {VALEUR_CENTRALE_US(1900,TOLERANCE)}, /* BP8: +/-40 us */
+                                        };
 
 //==============================================================================================
 /* Astuce: une macro pour n'ecrire qu'une seule fois la fonction ActionX() */
 #define DECLARE_ACTION(Idx)                              \
 void Action##Idx(void)                                   \
 {                                                        \
-static uint32_t DebutMs=millis();                        \
-static boolean Etat=HIGH;                                \
+static uint32_t DebutMs = millis();                      \
+static boolean Etat = HIGH;                              \
 /* Depuis la version 2.0 de la lib <RcSeq>, pour      */ \
 /* des raisons de reactivite, la tempo inter-commande */ \
 /* doit etre geree dans le sketch utilisateur.        */ \
   if(millis() - DebutMs >= 500UL)                        \
   {                                                      \
-    DebutMs=millis();                                    \
+    DebutMs = millis();                                  \
     digitalWrite(Idx, Etat);                             \
-    Etat=!Etat;                                          \
+    Etat = !Etat;                                        \
   }                                                      \
 }
 
