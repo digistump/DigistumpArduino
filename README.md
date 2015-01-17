@@ -1,10 +1,10 @@
 DigistumpArduino
 ================
 
-Files to add Digistump support (Digispark, Pro, DigiX) to Arduino 1.5.X (1.5.7+)
+Files to add Digistump support (Digispark, Pro, DigiX) to Arduino 1.5.X (1.5.8+)
 
 
-**Binary downloads of the bundled IDE can be found here:** https://github.com/digistump/DigistumpArduino/releases/tag/v1.5.8B
+**Binary downloads of the bundled IDE can be found here:** https://github.com/digistump/DigistumpArduino/releases/tag/v1.5.8C
 
 **To manually install:**
 
@@ -14,7 +14,7 @@ Place digistump folder inside the Arduino /hardware folder.
 
 To compile tools for other platforms or from scratch use:
 
-Arduino 1.5.X
+Arduino 1.5.X (1.5.8+)
 
 This repo.
 
