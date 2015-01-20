@@ -17,8 +17,10 @@
 
 #include "DigisparkOLED.h"
 #include "font6x8.h"
-#include "font8x16.h"
 
+#ifndef _nofont_8x16	// tBUG Optional removal to save code space
+#include "font8x16.h"
+#endif
 
 
 // ----------------------------------------------------------------------------
@@ -153,18 +155,27 @@ size_t SSD1306Device::write(byte c) {
 	if(c == '\r')
 		return 1;
 	if(c == '\n'){
-		if(oledFont == 0)
-			setCursor(0, oledY+1);
-		else
-			setCursor(0, oledY+2);
+		if(oledFont == FONT6X8) {	//	tBUG
+			oledY++;	
+//			if ( oledY > 7) // tBUG
+//				oledY = 7;
+			}
+		else {
+			oledY+=2;	//tBUG  Large Font up by two
+			if ( oledY > 6) // tBUG
+				oledY = 6;
+			}
+		setCursor(0, oledY);
 		return 1;
 	}
 
-	if(oledFont == 0){
+	if(oledFont == FONT6X8){
 		if (oledX > 122)
 		{
 			oledX = 0;
 			oledY++;
+			if ( oledY > 7) // tBUG
+				oledY = 7;
 			setCursor(oledX, oledY);
 		}
 		
@@ -176,11 +187,15 @@ size_t SSD1306Device::write(byte c) {
 		ssd1306_send_data_stop();
 		setCursor(oledX+6, oledY);
 	}
+#ifndef _nofont_8x16	// tBUG
 	else{
 		if (oledX > 120)
 		{
 			oledX = 0;
-			oledY++;
+			oledY+=2;	//tBUG  Large Font up by two
+//			oledY++;	
+			if ( oledY > 6) // tBUG
+				oledY = 6;
 			setCursor(oledX, oledY);
 		}
 		
@@ -198,8 +213,8 @@ size_t SSD1306Device::write(byte c) {
 		}
 		ssd1306_send_data_stop();
 		setCursor(oledX + 8, oledY - 1);
-
 	}
+#endif
 	return 1;
 }
 
@@ -210,9 +225,9 @@ void SSD1306Device::bitmap(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const
 {
 	uint16_t j = 0;
 	uint8_t y, x;
-	if (y1 % 8 == 0) y = y1 / 8;
-	else y = y1 / 8 + 1;
-	for (y = y0; y < y1; y++)
+	// if (y1 % 8 == 0) y = y1 / 8; 	// else y = y1 / 8 + 1;		// tBUG :: this does nothing as y is initialized below
+	//	THIS PARAM rule on y makes any adjustment here WRONG   //usage oled.bitmap(START X IN PIXELS, START Y IN ROWS OF 8 PIXELS, END X IN PIXELS, END Y IN ROWS OF 8 PIXELS, IMAGE ARRAY);
+ 	for (y = y0; y < y1; y++)
 	{
 		setCursor(x0,y);
 		ssd1306_send_data_start();

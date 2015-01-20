@@ -17,7 +17,10 @@
 #ifndef DIGISPARKOLED_H
 #define DIGISPARKOLED_H
 
+// #define _nofont_8x16		//tBUG
+#ifndef _nofont_8x16	//tBUG
  #define FONT8X16		1
+#endif
  #define FONT6X8		0
 
 // ----------------------------------------------------------------------------
