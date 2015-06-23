@@ -37,10 +37,19 @@ void DigisparkRGBBegin() {
   DigisparkPWMcompbuff[1] = 0x00;// set default PWM values
   DigisparkPWMcompbuff[2] = 0x00;// set default PWM values
   
-
+#ifdef TIFR
   TIFR = (1 << TOV0);           // clear interrupt flag
-  TIMSK = (1 << TOIE0);         // enable overflow interrupt
-  TCCR0B = (1 << CS00);         // start timer, no prescale
+#endif
+#ifdef TIFR0
+  TIFR0 = (1 << TOV0);           // clear interrupt flag
+#endif
+  #ifdef TIMSK
+  TIMSK = (1 << TOV0);           // enable overflow interrupt
+#endif
+#ifdef TIMSK0
+  TIMSK0 = (1 << TOV0);           // enable overflow interrupt
+#endif
+
 
   sei(); 
 }
