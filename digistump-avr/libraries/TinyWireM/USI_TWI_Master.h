@@ -21,14 +21,6 @@
 //********** Defines **********//
 
 // Defines controlling timing limits - SCL <= 100KHz.
-#if defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__)
-#define SYS_CLK   16500.0  // [kHz] Default for ATtiny2313
-
-#elif defined (__AVR_ATtiny87__) || defined (__AVR_ATtiny167__)
-#define SYS_CLK   16000.0  // [kHz] Default for ATtiny2313
-#endif
-
-
 
 // For use with _delay_us()
 #define T2_TWI    5 		// >4,7us
@@ -88,6 +80,16 @@
     #define PIN_USI_SCL         PINB2
 #endif
 
+#if defined(__AVR_ATtiny84__) | defined(__AVR_ATtiny44__)
+    #  define DDR_USI           DDRA
+    #  define PORT_USI          PORTA
+    #  define PIN_USI           PINA
+    #  define PORT_USI_SDA      PORTA6
+    #  define PORT_USI_SCL      PORTA4
+    #  define PIN_USI_SDA       PINA6
+    #  define PIN_USI_SCL       PINA4
+#endif
+
 #if defined(__AVR_AT90Tiny2313__) | defined(__AVR_ATtiny2313__)
     #define DDR_USI             DDRB
     #define PORT_USI            PORTB
@@ -119,4 +121,5 @@
 void              USI_TWI_Master_Initialise( void );
 unsigned char USI_TWI_Start_Random_Read( unsigned char * , unsigned char );
 unsigned char USI_TWI_Start_Read_Write( unsigned char * , unsigned char );
+unsigned char USI_TWI_Master_Stop( void );
 unsigned char USI_TWI_Get_State_Info( void );

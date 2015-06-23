@@ -20,20 +20,12 @@
 *			length should be these two bytes plus the number of bytes to read.
 ****************************************************************************/
 #include <avr/interrupt.h>
-#if defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__)
-#define F_CPU 16500000UL  
-
-#elif defined (__AVR_ATtiny87__) || defined (__AVR_ATtiny167__)
-#define F_CPU 16000000UL        // Sets up the default speed for delay.h
-#endif
-
 #include <util/delay.h>
 #include <avr/io.h>
 #include "USI_TWI_Master.h"
 
 unsigned char USI_TWI_Start_Transceiver_With_Data( unsigned char * , unsigned char );
 unsigned char USI_TWI_Master_Transfer( unsigned char );
-unsigned char USI_TWI_Master_Stop( void );
 unsigned char USI_TWI_Master_Start( void );
 
 union  USI_TWI_state
@@ -254,11 +246,8 @@ unsigned char USI_TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned 
       USI_TWI_Master_Transfer( tempUSISR_1bit );   // Generate ACK/NACK.
     }
   }while( --msgSize) ;                             // Until all data sent/received.
-  
-  if (!USI_TWI_Master_Stop())
-  {
-	return (FALSE);                           // Send a STOP condition on the TWI bus.
-	}
+
+  // usually a stop condition is sent here, but TinyWireM needs to choose whether or not to send it
 
 /* Transmission successfully completed*/
   return (TRUE);

@@ -38,10 +38,12 @@
 #define TinyWireM_h
 
 #include <inttypes.h>
+#include "Arduino.h"
 #define USI_SEND         0              // indicates sending to TWI
 #define USI_RCVE         1              // indicates receiving from TWI
-#define USI_BUF_SIZE    16              // bytes in message buffer
+#define USI_BUF_SIZE    18              // bytes in message buffer
 
+//class USI_TWI : public Stream
 class USI_TWI
 {
   private:
@@ -51,14 +53,30 @@ class USI_TWI
 	static uint8_t USI_BytesAvail;      // number of bytes requested but not read
 	
   public:
- 	USI_TWI();
-	void begin();
-    void beginTransmission(uint8_t);
-    void send(uint8_t);
+    USI_TWI();
+    void    begin();
+    void    beginTransmission(uint8_t);
+    size_t  write(uint8_t);
+    inline size_t write(uint8_t* d, uint8_t n) { uint16_t i; for (i = 0; i < n; i++) write(d[i]); return (size_t)n; }
+    inline size_t write(unsigned long n) { return write((uint8_t)n); }
+    inline size_t write(long n) { return write((uint8_t)n); }
+    inline size_t write(unsigned int n) { return write((uint8_t)n); }
+    inline size_t write(int n) { return write((uint8_t)n); }
+    void send(uint8_t b)               { write(b); }
+    void send(uint8_t *d, uint8_t n)   { write(d, n); }
+    void send(int n)                   { write((uint8_t)n); }
     uint8_t endTransmission();
+    uint8_t endTransmission(uint8_t);
     uint8_t requestFrom(uint8_t, uint8_t);
-    uint8_t receive(); 
-    uint8_t available(); 
+    int     read(); 
+    int     available(); 
+    int     peek(void);
+    void    flush(void);
+    uint8_t receive(void) {
+        int c = read();
+        if (c < 0) return 0;
+        return c;
+    }
 };
 
 extern USI_TWI TinyWireM;
