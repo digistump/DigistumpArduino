@@ -12,7 +12,7 @@ version=1.5.4
 # --------------------- 
 
 # Default "compiler.path" is correct, change only if you want to overidde the initial value
-compiler.path={runtime.ide.path}/hardware/tools/avr/bin/
+#compiler.path={runtime.ide.path}/hardware/tools/avr/bin/
 compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os -w -ffunction-sections -fdata-sections -MMD
 compiler.c.elf.flags=-Os -Wl,--gc-sections
@@ -65,13 +65,14 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 # AVR Uploader/Programmers tools
 # ------------------------------
 
-tools.micronucleus.cmd.path={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
-tools.micronucleus.cmd.path.linux={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
+#tools.micronucleus.cmd.path={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
+#tools.micronucleus.cmd.path.linux={runtime.ide.path}/hardware/digistump/avr/tools/avrdude
+tools.micronucleus.cmd.path={runtime.tools.micronucleus.path}/micronucleus
 
-tools.micronucleus.upload.params.verbose=-v
-tools.micronucleus.upload.params.quiet=-q
-#tools.micronucleus.upload.pattern="{cmd.path}" --run --timeout 60 "{build.path}/{build.project_name}.hex"
-tools.micronucleus.upload.pattern="{cmd.path}" -cdigispark --timeout 60 -Uflash:w:{build.path}/{build.project_name}.hex:i
+tools.micronucleus.upload.params.verbose=
+tools.micronucleus.upload.params.quiet=
+tools.micronucleus.upload.pattern="{cmd.path}" --run --timeout 60 "{build.path}/{build.project_name}.hex"
+#tools.micronucleus.upload.pattern="{cmd.path}" -cdigispark --timeout 60 -Uflash:w:{build.path}/{build.project_name}.hex:i
  
 # USB Default Flags
 # Default blank usb manufacturer will be filled it at compile time
