@@ -14,3 +14,4 @@ digix.build.variant=digix
 digix.build.variant_system_lib=libsam_sam3x8e_gcc_rel.a
 digix.build.vid=0x16D0
 digix.build.pid=0x078A
+digix.build.board=SAM_DIGIX
