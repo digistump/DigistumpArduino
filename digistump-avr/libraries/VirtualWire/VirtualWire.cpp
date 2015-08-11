@@ -270,7 +270,7 @@ void vw_pll()
 // Returns prescaler index into {0, 0, 3, 6, 8, 10, 12} array
 // and sets nticks to compare-match value if lower than max_ticks
 // returns 0 & nticks = 0 on fault
-uint8_t prescalers[] PROGMEM = {0, 0, 3, 6, 8, 10, 12}; /* Must be outside the function */
+const uint8_t prescalers[] PROGMEM = {0, 0, 3, 6, 8, 10, 12}; /* Must be outside the function */
 uint8_t _timer_calc(uint16_t speed, uint16_t max_ticks, uint16_t *nticks)
 {
     // Clock divider (prescaler) values - 0/4096: error flag
