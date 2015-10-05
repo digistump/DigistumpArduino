@@ -49,6 +49,9 @@ void DigisparkRGBBegin() {
 #ifdef TIMSK0
   TIMSK0 = (1 << TOV0);           // enable overflow interrupt
 #endif
+#ifdef TCCR0B
+  TCCR0B = (1 << CS00);         // start timer, no prescale
+#endif
 
 
   sei(); 
