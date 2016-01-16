@@ -163,14 +163,30 @@ class DigiKeyboardDevice : public Print {
 	  }
 	}
   
+  //sendKeyStroke: sends a key press AND release
   void sendKeyStroke(byte keyStroke) {
     sendKeyStroke(keyStroke, 0);
   }
 
+  //sendKeyStroke: sends a key press AND release with modifiers
   void sendKeyStroke(byte keyStroke, byte modifiers) {
+	sendKeyPress(keyStroke, modifiers);
+    // This stops endlessly repeating keystrokes:
+	sendKeyPress(0,0);
+  }
+
+  //sendKeyPress: sends a key press only - no release
+  //to release the key, send again with keyPress=0
+  void sendKeyPress(byte keyPress) {
+	sendKeyPress(keyPress, 0);
+  }
+
+  //sendKeyPress: sends a key press only, with modifiers - no release
+  //to release the key, send again with keyPress=0
+  void sendKeyPress(byte keyPress, byte modifiers) {
    	while (!usbInterruptIsReady()) {
-      // Note: We wait until we can send keystroke
-      //       so we know the previous keystroke was
+      // Note: We wait until we can send keyPress
+      //       so we know the previous keyPress was
       //       sent.
     	usbPoll();
     	_delay_ms(5);
@@ -179,20 +195,8 @@ class DigiKeyboardDevice : public Print {
     memset(reportBuffer, 0, sizeof(reportBuffer));
 		
     reportBuffer[0] = modifiers;
-    reportBuffer[1] = keyStroke;
+    reportBuffer[1] = keyPress;
     
-    usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
-		
-  	while (!usbInterruptIsReady()) {
-      // Note: We wait until we can send keystroke
-      //       so we know the previous keystroke was
-      //       sent.
-    	usbPoll();
-    	_delay_ms(5);
-    }
-      
-    // This stops endlessly repeating keystrokes:
-    memset(reportBuffer, 0, sizeof(reportBuffer));      
     usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
   }
   
