@@ -3,6 +3,8 @@
  *
  * TODO: Make a proper file header. :-)
  * Modified for Digispark by Digistump
+ *
+ * SendKeyStroke method extended by Danjovic, January 2016
  */
 #ifndef __DigiKeyboard_h__
 #define __DigiKeyboard_h__
@@ -166,8 +168,13 @@ class DigiKeyboardDevice : public Print {
   void sendKeyStroke(byte keyStroke) {
     sendKeyStroke(keyStroke, 0);
   }
-
+  
   void sendKeyStroke(byte keyStroke, byte modifiers) {
+	sendKeyStroke(keyStroke, modifiers, 1);  
+  }
+  
+
+  void sendKeyStroke(byte keyStroke, byte modifiers, uint16_t key_down_time) {
    	while (!usbInterruptIsReady()) {
       // Note: We wait until we can send keystroke
       //       so we know the previous keystroke was
@@ -190,10 +197,20 @@ class DigiKeyboardDevice : public Print {
     	usbPoll();
     	_delay_ms(5);
     }
-      
-    // This stops endlessly repeating keystrokes:
-    memset(reportBuffer, 0, sizeof(reportBuffer));      
-    usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
+	
+	// Pressing time (in milliseconds) that the key remains pressed
+	// until is released. If zero don't release the key (it should be
+	// done manually by sendKeysStroke(0). Therefore minimum time is 1ms
+	// and the maximum is 65535ms.
+	if (key_down_time) {
+		while (key_down_time--) {
+			usbPoll();      
+			_delay_ms(1);
+		}
+		// Now send 'no key' pressed
+		memset(reportBuffer, 0, sizeof(reportBuffer));
+		usbSetInterrupt(reportBuffer, sizeof(reportBuffer));	
+	} 
   }
   
   size_t write(uint8_t chr) {
