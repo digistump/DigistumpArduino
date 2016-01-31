@@ -2,13 +2,13 @@
 
 #include "LiquidCrystal_I2C.h"
 #include <inttypes.h>
-#if defined(__AVR_ATtiny85__) || (__AVR_ATtiny2313__) || (__AVR_ATtiny167__)
-#include "TinyWireM.h"      // include this if ATtiny85 or ATtiny2313
-#else 
-#include <Wire.h>           // original lib include
-#endif
 #include "Arduino.h"
 
+#if defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny2313__) || defined(__AVR_ATtiny167__)
+  #include "TinyWireM.h"      // include this if ATtiny85 or ATtiny2313
+#else
+  #include <Wire.h>           // original lib include
+#endif
 
 // When the display powers up, it is configured as follows:
 //
@@ -43,7 +43,7 @@ void LiquidCrystal_I2C::init(){
 
 void LiquidCrystal_I2C::init_priv()
 {
-#if defined (__AVR_ATtiny85__) || (__AVR_ATtiny2313__) || (__AVR_ATtiny167__)
+#if defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny2313__) || defined(__AVR_ATtiny167__)
 	TinyWireM.begin();             // initialize I2C lib
 #else   // original call
 	Wire.begin();
@@ -250,7 +250,7 @@ void LiquidCrystal_I2C::write4bits(uint8_t value) {
 }
 
 void LiquidCrystal_I2C::expanderWrite(uint8_t _data){                                        
-#if defined(__AVR_ATtiny85__) || (__AVR_ATtiny2313__)|| (__AVR_ATtiny167__)   // Replaced Wire calls with ATtiny TWI calls
+#if defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny2313__) || defined(__AVR_ATtiny167__)   // Replaced Wire calls with ATtiny TWI calls
 	TinyWireM.beginTransmission(_Addr); 
 	TinyWireM.send(((int)(_data) | _backlightval)); 
 	TinyWireM.endTransmission();
