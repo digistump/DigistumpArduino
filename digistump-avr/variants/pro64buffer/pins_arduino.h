@@ -27,6 +27,10 @@
 
 #define ATTINYX7 1
 
+#ifndef __AVR_ATtiny167__
+#define __AVR_ATtiny167__
+#endif
+
 #define SERIAL_BUFFER_SIZE 64
 
 #include <avr/pgmspace.h>
