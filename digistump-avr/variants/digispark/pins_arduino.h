@@ -47,6 +47,10 @@
 #define PORT_B_ID 1
 #endif
 
+#ifndef __AVR_ATtiny85__
+#define __AVR_ATtiny85__
+#endif
+
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
 
