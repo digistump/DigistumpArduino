@@ -13,46 +13,40 @@ byte GREEN = 1;
 byte COLORS[] = {RED, BLUE, GREEN};
 
 // the setup routine runs once when you press reset:
-void setup()  { 
+void setup() { 
   DigisparkRGBBegin();
 } 
 
 
-void loop ()
-{
-//direction: up = true, down = false
-boolean dir = true;
-int i = 0;
+void loop() {
+  //direction: up = true, down = false
+  boolean dir = true;
+  int i = 0;
+  
+  while(1) {
+    fade(COLORS[i%3], dir);
+    i++;
+    dir = !dir;
+  }
+}
 
-while(1)
-{
-fade(COLORS[i%3], dir);
-i++;
-dir = !dir;
+void fade(byte Led, boolean dir) {
+  int i;
+  
+  //if fading up
+  if (dir) {
+    for (i = 0; i < 256; i++) {
+      DigisparkRGB(Led, i);
+      DigisparkRGBDelay(25);//1);
+    }
+  } else {
+    for (i = 255; i >= 0; i--)  {
+      DigisparkRGB(Led, i);
+      DigisparkRGBDelay(25);//1);
+    }
+  }
 }
-}
-void fade(byte Led, boolean dir)
-{
-int i;
 
-//if fading up
-if (dir)
-{
-for (i = 0; i < 256; i++) 
-{
-DigisparkRGB(Led, i);
-DigisparkRGBDelay(25);//1);
-}
-}
-else
-{
-for (i = 255; i >= 0; i--) 
-{
-DigisparkRGB(Led, i);
-DigisparkRGBDelay(25);//1);
-}
-}
-}
 
 
 
