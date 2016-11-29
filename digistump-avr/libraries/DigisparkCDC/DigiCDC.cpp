@@ -151,7 +151,7 @@ void DigiCDCDevice::usbBegin()
 void DigiCDCDevice::usbPollWrapper()
 {
     usbPoll();
-    while((!(RingBuffer_IsEmpty(&txBuf)))&&(index<9))
+    while((!(RingBuffer_IsEmpty(&txBuf)))&&(index<8))
     {
         tmp[index++] = RingBuffer_Remove(&txBuf);
     }
