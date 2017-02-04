@@ -1,17 +1,13 @@
 # See: http://code.google.com/p/arduino/wiki/Platforms
 
-menu.cpu=Processor
-
 ##############################################################
-
-
-
 
 digispark-tiny.name=Digispark (Default - 16.5mhz)
 digispark-tiny.upload.using=micronucleusprog
 digispark-tiny.upload.protocol=usb
 digispark-tiny.upload.tool=micronucleus
 digispark-tiny.upload.maximum_size=6012
+digispark-tiny.upload.maximum_data_size=496
 digispark-tiny.build.mcu=attiny85
 digispark-tiny.build.f_cpu=16500000L
 digispark-tiny.build.board=AVR_DIGISPARK
@@ -21,12 +17,12 @@ digispark-tiny.upload.wait_for_upload_port = false
 digispark-tiny.upload.use_1200bps_touch = false
 digispark-tiny.upload.disable_flushing = false
 
-
 digispark-pro.name=Digispark Pro (Default 16 Mhz)
 digispark-pro.upload.using=micronucleusprog
 digispark-pro.upload.protocol=usb
 digispark-pro.upload.tool=micronucleus
 digispark-pro.upload.maximum_size=14844
+digispark-pro.upload.maximum_data_size=496
 digispark-pro.build.mcu=attiny167
 digispark-pro.build.f_cpu=16000000L
 digispark-pro.build.board=AVR_DIGISPARKPRO
@@ -41,6 +37,7 @@ digispark-pro32.upload.using=micronucleusprog
 digispark-pro32.upload.protocol=usb
 digispark-pro32.upload.tool=micronucleus
 digispark-pro32.upload.maximum_size=14844
+digispark-pro32.upload.maximum_data_size=496
 digispark-pro32.build.mcu=attiny167
 digispark-pro32.build.f_cpu=16000000L
 digispark-pro32.build.board=AVR_DIGISPARKPRO
@@ -55,6 +52,7 @@ digispark-pro64.upload.using=micronucleusprog
 digispark-pro64.upload.protocol=usb
 digispark-pro64.upload.tool=micronucleus
 digispark-pro64.upload.maximum_size=14844
+digispark-pro64.upload.maximum_data_size=496
 digispark-pro64.build.mcu=attiny167
 digispark-pro64.build.f_cpu=16000000L
 digispark-pro64.build.board=AVR_DIGISPARKPRO
@@ -69,6 +67,7 @@ digispark-tiny16.upload.using=micronucleusprog
 digispark-tiny16.upload.protocol=usb
 digispark-tiny16.upload.tool=micronucleus
 digispark-tiny16.upload.maximum_size=6012
+digispark-tiny16.upload.maximum_data_size=496
 digispark-tiny16.build.mcu=attiny85
 digispark-tiny16.build.f_cpu=16000000L
 digispark-tiny16.build.board=AVR_DIGISPARK
@@ -83,6 +82,7 @@ digispark-tiny8.upload.using=micronucleusprog
 digispark-tiny8.upload.protocol=usb
 digispark-tiny8.upload.tool=micronucleus
 digispark-tiny8.upload.maximum_size=6012
+digispark-tiny8.upload.maximum_data_size=496
 digispark-tiny8.build.mcu=attiny85
 digispark-tiny8.build.f_cpu=8000000L
 digispark-tiny8.build.board=AVR_DIGISPARK
@@ -97,6 +97,7 @@ digispark-tiny1.upload.using=micronucleusprog
 digispark-tiny1.upload.protocol=usb
 digispark-tiny1.upload.tool=micronucleus
 digispark-tiny1.upload.maximum_size=6012
+digispark-tiny1.upload.maximum_data_size=496
 digispark-tiny1.build.mcu=attiny85
 digispark-tiny1.build.f_cpu=1000000L
 digispark-tiny1.build.board=AVR_DIGISPARK
