@@ -3,6 +3,9 @@
 // Format: most signifficant bit indicates if scan code should be sent with shift modifier
 // remaining 7 bits are to be used as scan code number.
 
+#ifndef __scancode-ascii-table_h_included__
+#define __scancode-ascii-table_h_included__
+
 const unsigned char ascii_to_scan_code_table[] PROGMEM = {
   // /* ASCII:   0 */ 0,
   // /* ASCII:   1 */ 0,
@@ -132,3 +135,5 @@ const unsigned char ascii_to_scan_code_table[] PROGMEM = {
   /* ASCII: 125 */ 176,
   /* ASCII: 126 */ 181
 };
+
+#endif /* __scancode-ascii-table_h_included__ */
