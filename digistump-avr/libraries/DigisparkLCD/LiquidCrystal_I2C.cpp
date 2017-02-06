@@ -224,7 +224,7 @@ inline void LiquidCrystal_I2C::command(uint8_t value) {
 
 inline size_t LiquidCrystal_I2C::write(uint8_t value) {
 	send(value, Rs);
-	return 0;
+	return 1;
 }
 
 
