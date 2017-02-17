@@ -42,6 +42,7 @@ class DigiCDCDevice  : public Stream {
         void refresh();
         void task();
         void delay(long milli);
+        void setDtrPin(uint8_t dtrPin);
         virtual int available(void);
         virtual int peek(void);
         virtual int read(void);

@@ -16,6 +16,7 @@ and Digistump LLC (digistump.com)
 
 uchar              sendEmptyFrame;
 static uchar       intr3Status;    /* used to control interrupt endpoint transmissions */
+static uchar       portB_dtr_bit;
 
 DigiCDCDevice::DigiCDCDevice(void){}
 
@@ -143,8 +144,8 @@ void DigiCDCDevice::usbBegin()
     RingBuffer_InitBuffer(&rxBuf,rxBuf_Data,sizeof(rxBuf_Data));
 
     intr3Status = 0;
-    sendEmptyFrame = 0;    
-
+    sendEmptyFrame = 0;
+    portB_dtr_bit = 255;
     sei();   
 }
 
@@ -186,11 +187,11 @@ void DigiCDCDevice::usbPollWrapper()
     
 }
 
-
-
-
-
-
+void DigiCDCDevice::setDtrPin(uint8_t dtrPin){
+    portB_dtr_bit = dtrPin;
+    PORTB &= ~(_BV(portB_dtr_bit));
+    DDRB |= (1 << portB_dtr_bit);
+}
 
 #ifdef __cplusplus
 extern "C"{
@@ -320,6 +321,8 @@ usbRequest_t    *rq = (usbRequest_t*)((void *)data);
         /*    SET_LINE_CODING -> usbFunctionWrite()    */
         }
         if(rq->bRequest == SET_CONTROL_LINE_STATE){
+            if(portB_dtr_bit != 0xFF)
+                PORTB  = (PORTB&~(1<<portB_dtr_bit))|((rq->wValue.word&1)<<portB_dtr_bit);
             /* Report serial state (carrier detect). On several Unix platforms,
              * tty devices can only be opened when carrier detect is set.
              */
