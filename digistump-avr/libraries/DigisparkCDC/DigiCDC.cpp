@@ -75,7 +75,7 @@ int DigiCDCDevice::read()
     }
     else
     {
-        refresh();
+        //refresh();
         return RingBuffer_Remove(&rxBuf);
     }
    
