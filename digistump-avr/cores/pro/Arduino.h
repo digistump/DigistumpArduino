@@ -15,6 +15,8 @@
 extern "C"{
 #endif
 
+void yield(void);
+
 #define ATTINY_CORE 1
 
 #define HIGH 0x1
