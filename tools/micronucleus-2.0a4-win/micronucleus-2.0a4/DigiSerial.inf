@@ -1,0 +1,118 @@
+;
+; Windows USB CDC Driver Setup File for Digispark Serial 
+;
+;
+
+[Version] 
+Signature	= "$Windows NT$"
+Provider	= %COMPANY%
+DriverVer	= 08/16/2014,1.1.0.0
+CatalogFile = DigiSerial.cat
+
+Class		= Ports
+ClassGuid	= {4D36E978-E325-11CE-BFC1-08002BE10318}
+
+[Manufacturer]
+%VendorName% = Devices, NT, NTAMD64
+
+;--------------------------------------------------------------------------
+; Files
+;--------------------------------------------------------------------------
+
+[DestinationDirs]
+DefaultDestDir	= 12
+
+[SourceDisksFiles.x86]
+lowcdc.sys=1,x86
+
+[SourceDisksFiles.amd64]
+lowcdc.sys=1,amd64
+
+[SourceDisksNames]
+1 = %SourceName%
+;--------------------------------------------------------------------------
+; Device driver
+;--------------------------------------------------------------------------
+
+[DriverInstall.NT]
+Include	= mdmcpq.inf
+CopyFiles	= DriverInstall.NT.CopyFiles
+AddReg		= DriverInstall.NT.AddReg
+
+[DriverInstall.NT.CopyFiles]
+lowcdc.sys
+
+[DriverInstall.NT.Services]
+AddService	= usbser, 0x00000002, DriverServiceInst
+AddService	= lowcdc, 0x00000000, DriverLower.AddService
+
+[DriverInstall.NT.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NT.HW]
+AddReg=DriverLower.HW
+
+[DriverInstall.NTamd64]
+Include	= mdmcpq.inf
+CopyFiles	= DriverInstall.NTamd64.CopyFiles
+AddReg		= DriverInstall.NTamd64.AddReg
+
+[DriverInstall.NTamd64.CopyFiles]
+lowcdc.sys
+
+[DriverInstall.NTamd64.Services]
+AddService	= usbser, 0x00000002, DriverServiceInst
+AddService	= lowcdc, 0x00000000, DriverLower.AddService
+
+[DriverInstall.NTamd64.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NTamd64.HW]
+AddReg=DriverLower.HW
+
+[DriverLower.HW]
+HKR,,LowerFilters, 0x00010000, "lowcdc"
+
+;--------------------------------------------------------------------------
+; Services
+;--------------------------------------------------------------------------
+
+[DriverServiceInst]
+DisplayName	= %SERVICE%
+ServiceType	= 1
+StartType	= 3
+ErrorControl	= 1
+ServiceBinary	= %12%\usbser.sys
+LoadOrderGroup	= PNP Filter
+
+[DriverLower.AddService]
+DisplayName	= %SERVICE2%
+ServiceType	= 1
+StartType	= 3
+ErrorControl	= 1
+ServiceBinary	= %12%\lowcdc.sys 
+
+;--------------------------------------------------------------------------
+; Devices
+;--------------------------------------------------------------------------
+
+[Devices.NT]
+%DESCRIPTION%	= DriverInstall,USB\VID_16D0&PID_087E
+
+[Devices.NTAMD64]
+%DESCRIPTION%	= DriverInstall,USB\VID_16D0&PID_087E
+
+;--------------------------------------------------------------------------
+; Strings
+;--------------------------------------------------------------------------
+
+[Strings] 
+COMPANY	= "Digistump LLC"
+MFGNAME	= "www.digistump.com"
+DESCRIPTION	= "Digispark Virtual Com Port"
+SERVICE	= "USB RS-232 Emulation Driver"
+SERVICE2	= "Low-Speed CDC Transfer Interface"
