@@ -95,8 +95,8 @@ uint8_t TinyPinChange_GetPortEvent(uint8_t VirtualPortIdx);
 uint8_t TinyPinChange_GetCurPortSt(uint8_t VirtualPortIdx);
 #define TinyPinChange_PinToMsk(Pin)				_BV(digitalPinToPCMSKbit(Pin))
 #define TinyPinChange_Edge(VirtualPortIdx, Pin)		( TinyPinChange_GetPortEvent((VirtualPortIdx)) & TinyPinChange_PinToMsk((Pin)) )
-#define TinyPinChange_RisingEdge(VirtualPortIdx, Pin)		( TinyPinChange_GetPortEvent((VirtualPortIdx)) & TinyPinChange_PinToMsk((Pin)) &  TinyPinChange_GetCurPortSt((VirtualPortIdx)) ) 
-#define TinyPinChange_FallingEdge(VirtualPortIdx, Pin)		( TinyPinChange_GetPortEvent((VirtualPortIdx)) & TinyPinChange_PinToMsk((Pin)) & (TinyPinChange_GetCurPortSt((VirtualPortIdx) ^ 0xFF)) )
+#define TinyPinChange_RisingEdge(VirtualPortIdx, Pin)		( TinyPinChange_GetPortEvent((VirtualPortIdx)) & TinyPinChange_PinToMsk((Pin)) &  TinyPinChange_GetCurPortSt((VirtualPortIdx)) )
+#define TinyPinChange_FallingEdge(VirtualPortIdx, Pin)		( TinyPinChange_GetPortEvent((VirtualPortIdx)) & TinyPinChange_PinToMsk((Pin)) & (TinyPinChange_GetCurPortSt((VirtualPortIdx)) ^ 0xFF) )
 
 /*******************************************************/
 /* Application Programming Interface (API) en Francais */
