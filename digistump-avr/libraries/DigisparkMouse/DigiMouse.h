@@ -60,35 +60,35 @@ static unsigned long last_report_time = 0;
 char usb_hasCommed = 0;
 
 const PROGMEM unsigned char mouse_usbHidReportDescriptor[] = { /* USB report descriptor */
-		0x05, 0x01,										 // USAGE_PAGE (Generic Desktop)
-		0x09, 0x02,										 // USAGE (Mouse)
-		0xa1, 0x01,										 // COLLECTION (Application)
-		0x09, 0x01,										 //		USAGE_PAGE (Pointer)
-		0xa1, 0x00,										 //		COLLECTION (Physical)
-		0x05, 0x09,										 //		USAGE_PAGE (Button)
-		0x19, 0x01,										 //		USAGE_MINIMUM (Button 1)
-		0x29, 0x03,										 //		USAGE_MAXIMUM (Button 3)
-		0x15, 0x00,										 //		LOGICAL_MINIMUM (0)
-		0x25, 0x01,										 //		LOGICAL_MAXIMUM (1)
-		0x95, 0x03,										 //		REPORT_COUNT (3)
-		0x75, 0x01,										 //		REPORT_SIZE (1)
-		0x81, 0x02,										 //		INPUT (Data,Var,Abs)
-		0x95, 0x01,										 //		REPORT_COUNT (1)
-		0x75, 0x05,										 //		REPORT_SIZE (5)
-		0x81, 0x01,										 //		Input(Cnst)
-		0x05, 0x01,										 //		USAGE_PAGE(Generic Desktop)
-		0x09, 0x30,										 //		USAGE(X)
-		0x09, 0x31,										 //		USAGE(Y)
-		0x15, 0x81,										 //		LOGICAL_MINIMUM (-127)
-		0x25, 0x7f,										 //		LOGICAL_MAXIMUM (127)
-		0x75, 0x08,										 //		REPORT_SIZE (8)
-		0x95, 0x02,										 //		REPORT_COUNT (2)
-		0x81, 0x06,										 //		INPUT (Data,Var,Rel)
-		0x09, 0x38,											//	 Usage (Wheel)
-		0x95, 0x01,											//	 Report Count (1),
-		0x81, 0x06,											//	 Input (Data, Variable, Relative)
-		0xc0,														// END_COLLECTION
-		0xc0													 // END_COLLECTION
+		(unsigned char) 0x05, (unsigned char) 0x01,										 // USAGE_PAGE (Generic Desktop)
+		(unsigned char) 0x09, (unsigned char) 0x02,										 // USAGE (Mouse)
+		(unsigned char) 0xa1, (unsigned char) 0x01,										 // COLLECTION (Application)
+		(unsigned char) 0x09, (unsigned char) 0x01,										 //		USAGE_PAGE (Pointer)
+		(unsigned char) 0xa1, (unsigned char) 0x00,										 //		COLLECTION (Physical)
+		(unsigned char) 0x05, (unsigned char) 0x09,										 //		USAGE_PAGE (Button)
+		(unsigned char) 0x19, (unsigned char) 0x01,										 //		USAGE_MINIMUM (Button 1)
+		(unsigned char) 0x29, (unsigned char) 0x03,										 //		USAGE_MAXIMUM (Button 3)
+		(unsigned char) 0x15, (unsigned char) 0x00,										 //		LOGICAL_MINIMUM (0)
+		(unsigned char) 0x25, (unsigned char) 0x01,										 //		LOGICAL_MAXIMUM (1)
+		(unsigned char) 0x95, (unsigned char) 0x03,										 //		REPORT_COUNT (3)
+		(unsigned char) 0x75, (unsigned char) 0x01,										 //		REPORT_SIZE (1)
+		(unsigned char) 0x81, (unsigned char) 0x02,										 //		INPUT (Data,Var,Abs)
+		(unsigned char) 0x95, (unsigned char) 0x01,										 //		REPORT_COUNT (1)
+		(unsigned char) 0x75, (unsigned char) 0x05,										 //		REPORT_SIZE (5)
+		(unsigned char) 0x81, (unsigned char) 0x01,										 //		Input(Cnst)
+		(unsigned char) 0x05, (unsigned char) 0x01,										 //		USAGE_PAGE(Generic Desktop)
+		(unsigned char) 0x09, (unsigned char) 0x30,										 //		USAGE(X)
+		(unsigned char) 0x09, (unsigned char) 0x31,										 //		USAGE(Y)
+		(unsigned char) 0x15, (unsigned char) 0x81,										 //		LOGICAL_MINIMUM (-127)
+		(unsigned char) 0x25, (unsigned char) 0x7f,										 //		LOGICAL_MAXIMUM (127)
+		(unsigned char) 0x75, (unsigned char) 0x08,										 //		REPORT_SIZE (8)
+		(unsigned char) 0x95, (unsigned char) 0x02,										 //		REPORT_COUNT (2)
+		(unsigned char) 0x81, (unsigned char) 0x06,										 //		INPUT (Data,Var,Rel)
+		(unsigned char) 0x09, (unsigned char) 0x38,											//	 Usage (Wheel)
+		(unsigned char) 0x95, (unsigned char) 0x01,											//	 Report Count (1),
+		(unsigned char) 0x81, (unsigned char) 0x06,											//	 Input (Data, Variable, Relative)
+		(unsigned char) 0xc0,														// END_COLLECTION
+		(unsigned char) 0xc0													 // END_COLLECTION
 };
 
 
