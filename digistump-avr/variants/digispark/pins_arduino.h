@@ -91,6 +91,7 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define digitalPinToPCICRbit(p) (PCIE)
 #define digitalPinToPCMSK(p)    (((p) >= 0 && (p) <= 5) ? (&PCMSK) : ((uint8_t *)NULL))
 #define digitalPinToPCMSKbit(p) (p)
+#define digitalPinToInterrupt(p) ((p) == 2 ? 0 : NOT_AN_INTERRUPT)
 #endif
 
 #if defined(__AVR_ATtinyX4__)
@@ -98,6 +99,7 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define digitalPinToPCICRbit(p) (((p) <= 2) ? PCIE1 : PCIE0)
 #define digitalPinToPCMSK(p)    (((p) <= 2) ? (&PCMSK1) : (((p) <= 10) ? (&PCMSK0) : ((uint8_t *)NULL)))
 #define digitalPinToPCMSKbit(p) (((p) <= 2) ? (p) : (10 - (p)))
+#define digitalPinToInterrupt(p) ((p) == 2 ? 0 : NOT_AN_INTERRUPT)
 #endif
 
 #if defined(__AVR_ATtiny4313__)
@@ -114,6 +116,7 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define digitalPinToPCICRbit(p) digitalPinToPCX( p, PCIE2,   PCIE1,   PCIE2,   PCIE0,   0    )
 #define digitalPinToPCMSK(p)    digitalPinToPCX( p, &PCMSK2, &PCMSK1, &PCMSK2, &PCMSK0, NULL )
 #define digitalPinToPCMSKbit(p) digitalPinToPCX( p, p,       3-p,     p-2,     p-9,     0    )
+#define digitalPinToInterrupt(p) ((p) == 2 ? 0 : ((p) == 3 ? 1 : NOT_AN_INTERRUPT))
 #endif
 
 #endif
