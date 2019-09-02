@@ -3,4 +3,5 @@
 
 #include <WProgram.h>
 
+#define NOT_AN_INTERRUPT -1
 #endif
