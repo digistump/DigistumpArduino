@@ -78,6 +78,7 @@ class String
     String trim( ) const;
     void getBytes(unsigned char *buf, unsigned int bufsize);
     void toCharArray(char *buf, unsigned int bufsize);
+    const char* c_str() const { return buffer; }
     long toInt( );
     const String& concat( const String &str );
     String replace( char oldChar, char newChar );
