@@ -109,8 +109,8 @@
 #define TIMER_RESET
 #define TIMER_ENABLE_PWM     (TCCR0A |= _BV(COM0B1))
 #define TIMER_DISABLE_PWM    (TCCR0A &= ~(_BV(COM0B1)))
-#define TIMER_ENABLE_INTR    (TIMSK = _BV(OCIE0A))
-#define TIMER_DISABLE_INTR   (TIMSK = 0)
+#define TIMER_ENABLE_INTR    (TIMSK |= _BV(OCIE0A))
+#define TIMER_DISABLE_INTR   (TIMSK &= ~(_BV(OCIE0A)))
 #define TIMER_INTR_NAME      TIMER0_COMPA_vect
 #define TIMER_CONFIG_KHZ(val) ({ \
   const uint8_t pwmval = SYSCLOCK / 2000 / (val); \
