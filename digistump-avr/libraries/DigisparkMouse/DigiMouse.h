@@ -185,7 +185,11 @@ class DigiMouseDevice {
 		
 		// instead of above code, use millis arduino system to enforce minimum reporting frequency
 		unsigned long time_since_last_report = millis() - last_report_time;
-		if (time_since_last_report >= (idle_rate * 4 /* in units of 4ms - usb spec stuff */)) {
+		/* idle_rate == 0, never send idle reports
+		   cf https://www.usb.org/sites/default/files/hid1_11.pdf 7.2.4 "Set_Idle Request":
+		   "When the upper byte of wValue is 0 (zero), the duration is indefinite. The endpoint will
+		    inhibit reporting forever, only reporting when a change is detected in the report data." */
+		if (idle_rate > 0 && time_since_last_report >= (idle_rate * 4 /* in units of 4ms - usb spec stuff */)) {
 			last_report_time += idle_rate * 4;
 			must_report = 1;
 		}
