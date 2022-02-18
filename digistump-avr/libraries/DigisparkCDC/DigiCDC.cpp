@@ -16,6 +16,13 @@ and Digistump LLC (digistump.com)
 
 uchar              sendEmptyFrame;
 static uchar       intr3Status;    /* used to control interrupt endpoint transmissions */
+static volatile union {
+    uchar u8;
+    struct {
+        bool dtr: 1;
+        bool rts: 1;
+    } name;
+} controlLines;
 
 DigiCDCDevice::DigiCDCDevice(void){}
 
@@ -79,6 +86,17 @@ int DigiCDCDevice::read()
         return RingBuffer_Remove(&rxBuf);
     }
    
+
+}
+
+bool DigiCDCDevice::getDTR()
+{
+    return controlLines.name.dtr;
+}
+
+bool DigiCDCDevice::getRTS()
+{
+    return controlLines.name.rts;
 }
 
 int DigiCDCDevice::peek()
@@ -325,6 +343,7 @@ usbRequest_t    *rq = (usbRequest_t*)((void *)data);
              */
             if( intr3Status==0 )
                 intr3Status = 2;
+            controlLines.u8 = rq->wValue.word;
         }
 
         /*  Prepare bulk-in endpoint to respond to early termination   */

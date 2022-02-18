@@ -45,6 +45,8 @@ class DigiCDCDevice  : public Stream {
         virtual int available(void);
         virtual int peek(void);
         virtual int read(void);
+        virtual bool getDTR(void);
+        virtual bool getRTS(void);
         virtual void flush(void);
         virtual size_t write(uint8_t);
         using Print::write;
