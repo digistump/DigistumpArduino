@@ -7,7 +7,7 @@ menu.cpu=Processor
 
 
 
-digispark-tiny.name=Digispark (Default - 16.5mhz)
+digispark-tiny.name=Digispark (Default - 16.5MHz)
 digispark-tiny.upload.using=micronucleusprog
 digispark-tiny.upload.protocol=usb
 digispark-tiny.upload.tool=micronucleus
@@ -22,7 +22,7 @@ digispark-tiny.upload.use_1200bps_touch = false
 digispark-tiny.upload.disable_flushing = false
 
 
-digispark-pro.name=Digispark Pro (Default 16 Mhz)
+digispark-pro.name=Digispark Pro (Default - 16 MHz)
 digispark-pro.upload.using=micronucleusprog
 digispark-pro.upload.protocol=usb
 digispark-pro.upload.tool=micronucleus
@@ -36,7 +36,7 @@ digispark-pro.upload.wait_for_upload_port = false
 digispark-pro.upload.use_1200bps_touch = false
 digispark-pro.upload.disable_flushing = false
 
-digispark-pro32.name=Digispark Pro (16 Mhz) (32 byte buffer)
+digispark-pro32.name=Digispark Pro (16 MHz) (32 byte buffer)
 digispark-pro32.upload.using=micronucleusprog
 digispark-pro32.upload.protocol=usb
 digispark-pro32.upload.tool=micronucleus
@@ -50,7 +50,7 @@ digispark-pro32.upload.wait_for_upload_port = false
 digispark-pro32.upload.use_1200bps_touch = false
 digispark-pro32.upload.disable_flushing = false
 
-digispark-pro64.name=Digispark Pro (16 Mhz) (64 byte buffer)
+digispark-pro64.name=Digispark Pro (16 MHz) (64 byte buffer)
 digispark-pro64.upload.using=micronucleusprog
 digispark-pro64.upload.protocol=usb
 digispark-pro64.upload.tool=micronucleus
@@ -64,7 +64,7 @@ digispark-pro64.upload.wait_for_upload_port = false
 digispark-pro64.upload.use_1200bps_touch = false
 digispark-pro64.upload.disable_flushing = false
 
-digispark-tiny16.name=Digispark (16mhz - No USB)
+digispark-tiny16.name=Digispark (16MHz - No USB)
 digispark-tiny16.upload.using=micronucleusprog
 digispark-tiny16.upload.protocol=usb
 digispark-tiny16.upload.tool=micronucleus
@@ -78,7 +78,7 @@ digispark-tiny16.upload.wait_for_upload_port = false
 digispark-tiny16.upload.use_1200bps_touch = false
 digispark-tiny16.upload.disable_flushing = false
 
-digispark-tiny8.name=Digispark (8mhz - No USB)
+digispark-tiny8.name=Digispark (8MHz - No USB)
 digispark-tiny8.upload.using=micronucleusprog
 digispark-tiny8.upload.protocol=usb
 digispark-tiny8.upload.tool=micronucleus
@@ -92,7 +92,7 @@ digispark-tiny8.upload.wait_for_upload_port = false
 digispark-tiny8.upload.use_1200bps_touch = false
 digispark-tiny8.upload.disable_flushing = false
 
-digispark-tiny1.name=Digispark (1mhz - No USB)
+digispark-tiny1.name=Digispark (1MHz - No USB)
 digispark-tiny1.upload.using=micronucleusprog
 digispark-tiny1.upload.protocol=usb
 digispark-tiny1.upload.tool=micronucleus
