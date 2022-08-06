@@ -156,6 +156,13 @@ const PROGMEM char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
 #define KEY_ARROW_LEFT      80
 #define KEY_ARROW_RIGHT     79
 
+#define KEY_NUM_LOCK    83
+#define KEY_NUM_DIV     84
+#define KEY_NUM_MUL     85
+#define KEY_NUM_SUB     86
+#define KEY_NUM_ADD     87
+
+
 class DigiKeyboardDevice : public Print {
  public:
   DigiKeyboardDevice () {
