@@ -4,7 +4,7 @@
  * TODO: Make a proper file header. :-)
  * Modified for Digispark by Digistump
  * And now modified by Sean Murphy (duckythescientist) from a keyboard device to a mouse device
- * Most of the credit for the joystick code should go to Raphaël Assénat
+ * Most of the credit for the joystick code should go to RaphaÃ«l AssÃ©nat
  * And now mouse credit is due to Yiyin Ma and Abby Lin of Cornell
  */
 #ifndef __DigiMouse_h__
@@ -256,11 +256,11 @@ class DigiMouseDevice {
 	}
 
 	void leftClick(){
-		last_built_report[0] = MOUSEBTN_RIGHT_MASK;
+		last_built_report[0] = MOUSEBTN_LEFT_MASK;
 	}
 	
 	void middleClick(){
-		last_built_report[0] = MOUSEBTN_RIGHT_MASK;
+		last_built_report[0] = MOUSEBTN_MIDDLE_MASK;
 	}
 	
 	void setButtons(unsigned char buttons) {
