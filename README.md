@@ -21,3 +21,5 @@ Micronucleus is the only executable in these packages that is pre-compiled:
 
 Micronucleus: https://github.com/micronucleus/micronucleus/tree/80419704f68bf0783c5de63a6a4b9d89b45235c7
 Dependencies: libusb and possibly lib32stdc on linux - (on ubuntu get it by issuing: apt-get install lib32stdc++6)
+
+That thing is amazing! Aunque creo que podria hacer algo equivalente en python mucho mas facilmente, si hubiese hecho una biblioteca enfocada a python, seria mucho mas facil manejar todo esto.
