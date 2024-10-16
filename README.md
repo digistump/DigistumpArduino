@@ -5,7 +5,7 @@ Files to add Digistump support (Digispark, Pro, DigiX) to Arduino 1.6.X (1.6.4+)
 
 **These files are designed for install via the Arduino Boards Manager:** 
 
-Board manager URL: http://digistump.com/package_digistump_index.json
+Board manager URL: https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
 
 **Full Install Instructions:** 
 
