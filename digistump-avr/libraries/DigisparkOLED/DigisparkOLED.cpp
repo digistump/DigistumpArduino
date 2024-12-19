@@ -120,7 +120,7 @@ void SSD1306Device::setCursor(uint8_t x, uint8_t y)
 	ssd1306_send_command_start();
 	Wire.write(0xb0 + y);
 	Wire.write(((x & 0xf0) >> 4) | 0x10); // | 0x10
-	Wire.write((x & 0x0f) | 0x01); // | 0x01
+	Wire.write(x & 0x0f);
 	ssd1306_send_command_stop();
 	oledX = x;
 	oledY = y;
